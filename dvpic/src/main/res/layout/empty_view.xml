@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- RelativeLayout as root required -->
+
+    <TextView
+        android:id="@+id/empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:drawableTop="@drawable/noitems_image"
+        android:gravity="center_horizontal"
+        android:text="@string/msg_gallery_empty"
+        android:textColor="@color/empty_text_color"
+        android:textSize="@dimen/title_text_size"/>
+
+</merge>

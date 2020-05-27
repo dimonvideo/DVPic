@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dvpic="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:visibility="gone"
+        android:src="@drawable/dv_logo" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:layout_gravity="center|top" />
+    <ImageView
+        android:id="@+id/corner"
+        android:layout_width="85dp"
+        android:layout_height="86dp"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/dvpic_corner" />
+
+    <LinearLayout
+        android:id="@+id/buttons_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/btn_panel_back"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp" >
+            <ua.cv.westward.dvpic.types.InfoButton
+                android:id="@+id/new_btn"
+                android:layout_width="230dp"
+                android:layout_height="60dp"
+                android:background="@drawable/btn_main"
+                android:tag="NEW"
+                dvpic:infoButtonTitle="@string/btn_new_images_title" >
+            </ua.cv.westward.dvpic.types.InfoButton>
+            
+            <ua.cv.westward.dvpic.types.InfoButton
+                android:id="@+id/favorites_btn"
+                android:layout_width="230dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_main"
+                android:tag="FAV"
+                dvpic:infoButtonTitle="@string/btn_favorites_title" >
+            </ua.cv.westward.dvpic.types.InfoButton>
+            
+            <ua.cv.westward.dvpic.types.InfoButton
+                android:id="@+id/sites_btn"
+                android:layout_width="230dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_main"
+                android:tag="SITES"
+                dvpic:infoButtonTitle="@string/btn_sites_title" >
+            </ua.cv.westward.dvpic.types.InfoButton>
+    </LinearLayout>
+
+</FrameLayout>

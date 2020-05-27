@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <androidx.preference.PreferenceCategory
+        android:summary="@string/prefs_main_screen_summary"
+        android:title="@string/prefs_main_screen_title" >
+        <ListPreference
+            android:defaultValue="AUTO"
+            android:dialogTitle="@string/pref_orientation_title"
+            android:entries="@array/orientation_names"
+            android:entryValues="@array/orientation_values"
+            android:key="ORIENTATION"
+            android:summary="@string/pref_orientation_summary"
+            android:title="@string/pref_orientation_title" />
+        <ListPreference
+            android:defaultValue="HOME"
+            android:dialogTitle="@string/pref_widget_onclick_title"
+            android:entries="@array/widget_onclick_titles"
+            android:entryValues="@array/widget_onclick_values"
+            android:key="WIDGET_ONCLICK"
+            android:summary="@string/pref_widget_onclick_summary"
+            android:title="@string/pref_widget_onclick_title" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        android:summary="@string/prefs_view_screen_summary"
+        android:title="@string/prefs_view_screen_title" >
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="FULLSCREEN"
+            android:summary="@string/pref_fullscreen_summary"
+            android:title="@string/pref_fullscreen_title" />
+        <ListPreference
+            android:defaultValue="OVER"
+            android:dialogTitle="@string/pref_show_toolbar_title"
+            android:entries="@array/toolbar_names"
+            android:entryValues="@array/toolbar_values"
+            android:key="IMAGE_TOOLBAR"
+            android:summary="@string/pref_show_toolbar_summary"
+            android:title="@string/pref_show_toolbar_title" />
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="VOLUME_BUTTONS"
+            android:summary="@string/pref_volume_buttons_summary"
+            android:title="@string/pref_volume_buttons_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="NEW_EXIT"
+            android:summary="@string/pref_new_exit_summary"
+            android:title="@string/pref_new_exit_title" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="SHOW_IMAGE_NUM"
+            android:summary="@string/pref_show_image_num_summary"
+            android:title="@string/pref_show_image_num_title" />
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="SHOW_IMAGE_INFO"
+            android:summary="@string/pref_show_image_info_summary"
+            android:title="@string/pref_show_image_info_title" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        android:key="MANAGEMENT"
+        android:summary="@string/prefs_pics_management_summary"
+        android:title="@string/prefs_pics_management_title" >
+        <ListPreference
+            android:defaultValue="WIFI"
+            android:dialogTitle="@string/pref_network_type_title"
+            android:entries="@array/network_type_names"
+            android:entryValues="@array/network_type_values"
+            android:key="NETWORK_TYPE"
+            android:summary="@string/pref_network_type_summary"
+            android:title="@string/pref_network_type_title" />
+        <ListPreference
+            android:defaultValue="WIFI"
+            android:dialogTitle="@string/pref_gif_type_title"
+            android:entries="@array/network_type_names2"
+            android:entryValues="@array/network_type_values2"
+            android:key="GIF_NETWORK_TYPE"
+            android:summary="@string/pref_gif_type_summary"
+            android:title="@string/pref_gif_type_title" />
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/pref_auto_reload_title"
+            android:entries="@array/auto_reload_names"
+            android:entryValues="@array/auto_reload_values"
+            android:key="AUTO_RELOAD"
+            android:summary="@string/pref_auto_reload_summary"
+            android:title="@string/pref_auto_reload_title" />
+        <ListPreference
+            android:defaultValue="200"
+            android:dialogTitle="@string/pref_storage_title"
+            android:entries="@array/storage_amount_values"
+            android:entryValues="@array/storage_amount_values"
+            android:key="STORAGE_FAV"
+            android:summary="@string/pref_storage_summary"
+            android:title="@string/pref_storage_favorites_titles" />
+        <ListPreference
+            android:defaultValue="200"
+            android:dialogTitle="@string/pref_storage_title"
+            android:entries="@array/storage_amount_values"
+            android:entryValues="@array/storage_amount_values"
+            android:key="STORAGE_DV"
+            android:summary="@string/pref_storage_summary"
+            android:title="@string/pref_storage_dv_title" />
+        </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="orientation_names">
+        <item>Авто</item>
+        <item>Портрет</item>
+        <item>Ландшафт</item>
+    </string-array>
+    <string-array name="orientation_values">
+        <item>AUTO</item>
+        <item>PORTRAIT</item>
+        <item>LANDSCAPE</item>
+    </string-array>
+    <string-array name="toolbar_names">
+        <item>Выключена</item>
+        <item>Внизу</item>
+        <item>Поверх картинки</item>
+    </string-array>
+    <string-array name="toolbar_values">
+        <item>OFF</item>
+        <item>BOTTOM</item>
+        <item>OVER</item>
+    </string-array>
+    <string-array name="network_type_names">
+        <item>Любая доступная</item>
+        <item>Только WiFi</item>
+        <item>Только GSM/3G</item>
+    </string-array>
+    <string-array name="network_type_values">
+        <item>BOTH</item>
+        <item>WIFI</item>
+        <item>GSM</item>
+    </string-array>
+    <string-array name="network_type_names2">
+        <item>Любая доступная</item>
+        <item>Только WiFi</item>
+        <item>Только GSM/3G</item>
+        <item>Не загружать</item>
+        </string-array>
+    <string-array name="network_type_values2">
+        <item>ANY</item>
+        <item>WIFI</item>
+        <item>GSM</item>
+        <item>OFF</item>
+        </string-array>
+    <string-array name="auto_reload_names">
+        <item>Вручную</item>
+        <item>1 час</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>12 часов</item>
+        <item>1 день</item>
+    </string-array>
+    <string-array name="auto_reload_values">
+        <item>0</item>
+        <item>3600000</item>
+        <item>10800000</item>
+        <item>21600000</item>
+        <item>43200000</item>
+        <item>86400000</item>
+    </string-array>
+    <string-array name="storage_amount_values">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>750</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="storage2_amount_titles">        
+        <item>Не использовать</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>750</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="storage2_amount_values">        
+        <item>0</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>750</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="image_title_names">
+        <item>Название сайта</item>
+        <item>Заголовок картинки</item>
+    </string-array>
+    <string-array  name="image_title_values">
+        <item>SITE</item>
+        <item>TITLE</item>
+    </string-array>
+    <string-array name="widget_onclick_titles">
+        <item>Главное окно</item>
+        <item>Новые картинки</item>
+    </string-array>
+    <string-array name="widget_onclick_values">
+        <item>HOME</item>
+        <item>NEW</item>
+    </string-array>
+</resources>

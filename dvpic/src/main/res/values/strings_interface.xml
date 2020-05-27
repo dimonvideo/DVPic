@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_ok_title">OK</string>
+    <string name="btn_close_title">Закрыть</string>
+    <string name="btn_cancel_title">Отмена</string>
+    <string name="btn_new_images_title">Новые картинки</string>
+    <string name="btn_favorites_title">Избранное</string>
+    <string name="btn_sites_title">Все картинки</string>
+
+    <string name="menu_alert_title">Ошибка</string>
+    <string name="menu_reload_all_title">Обновить</string>
+    <string name="menu_preferences_title">Настройки</string>
+    <string name="menu_about_title">О приложении</string>
+    <string name="menu_log_title">Журнал за неделю</string>
+    <string name="menu_share_title">Отправить в..</string>
+    <string name="menu_command_title">Команды</string>
+    <string name="menu_save_title">Сохранить</string>
+    <string name="menu_favorite_title">Добавить в избранное</string>
+    <string name="menu_reload_title">Обновить</string>
+    <string name="menu_go_first_title">В начало</string>
+    <string name="menu_go_last_title">В конец</string>
+    
+    <string name="dialog_warning_title">Внимание!</string>
+    <string name="dialog_error_title">Ошибка</string>
+    <string name="dialog_share_title">Отправить в</string>
+    <string name="dialog_command_title">Выберите команду</string>
+    
+    <string name="dialog_site_select">Выбор сайта</string>
+    
+    <string name="command_open_page">Открыть веб-страницу картинки</string>
+    <string name="command_copy_url">Скопировать ссылку на картинку</string>
+    <string name="command_copy_bb_url">Скопировать ссылку в BB-коде</string>
+    <string name="command_mark_read_all">Отметить все как просмотренные</string>
+    
+    <string name="theme_window_title">Настройка темы</string>
+    <string name="theme_background_title">Фоновый рисунок</string>
+</resources>

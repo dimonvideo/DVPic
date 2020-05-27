@@ -1,0 +1,13 @@
+/.gradle/
+/.idea/
+/build/
+/dvpic/build/
+/dvpic/dvpic.iml
+/dvpic/DVPic_new-dvpic.iml
+/dvpic/proguard-rules.pro
+/gradle/wrapper/gradle-wrapper.jar
+/Android-DVPic_new.iml
+/DVPic_new.iml
+/gradlew
+/gradlew.bat
+/local.properties

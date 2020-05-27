@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Main.ActionBar" parent="Theme.Main.Sherlock">
+        <item name="android:icon">@drawable/icon</item>
+        <item name="displayOptions">showTitle</item>
+
+    </style>
+
+    <style name="App.ActionBar" parent="@style/Main.ActionBar">
+        <item name="android:background">@color/transparent</item>
+        <item name="background">@color/transparent</item>
+
+    </style>
+
+    <style name="NotificationText">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+    <style name="NotificationTitle">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <!-- If you want a slightly different color for some text, consider using 
+        ?android:attr/textColorSecondary -->
+        
+    <style name="InfoButton">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">55dp</item>
+    </style>
+
+    <style name="HoloButtonBar">
+        <item name="android:background">@drawable/divider_horizontal_holo_dark</item>        
+    </style>
+        
+    <style name="Widget">
+    </style>
+
+    <style name="Widget.HoloButton">
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+        <item name="android:textColor">@color/primary_text_holo_dark</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textSize">15sp</item>        
+        </style>
+    
+    <style name="Widget.HoloButton.Borderless">
+        <item name="android:background">@drawable/item_background_holo_dark</item>        
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+    </style>
+    
+    <style name="DialogWindowTitle.Holo" parent="Widget">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Holo.DialogWindowTitle</item>
+        <item name="android:minHeight">@dimen/dialog_title_height</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+
+    <style name="TextAppearance.Holo.DialogWindowTitle" parent="Widget">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/holo_blue_light</item>
+    </style>
+
+    <style name="NavDrawerItem" parent="Widget">
+        <item name="android:drawablePadding">4dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:textColor">@color/primary_text_holo_dark</item>
+    </style>
+    
+    <style name="NavDrawerItem.Large">
+        <item name="android:textSize">18sp</item>
+        <item name="android:minHeight">64dip</item>
+    </style>    
+    
+</resources>

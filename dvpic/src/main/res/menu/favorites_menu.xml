@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:id="@+id/menu_image_actions"><item android:id="@+id/menu_favorite" android:icon="@drawable/ic_menu_important"
+        android:title="@string/menu_favorite_title"
+        app:showAsAction="ifRoom">
+    </item>
+        <item
+        android:id="@+id/menu_save"
+        android:icon="@android:drawable/ic_menu_save"
+
+            android:title="@string/menu_save_title"
+            app:showAsAction="ifRoom">
+    </item>
+        <item
+        android:id="@+id/menu_share"
+        android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/menu_share_title"
+            app:showAsAction="ifRoom">
+    </item></group>
+    <group android:id="@+id/menu_image_group" >
+        <item
+            android:id="@+id/menu_show_first"
+            android:icon="@drawable/ic_menu_back"
+
+            android:title="@string/menu_go_first_title"
+            app:showAsAction="collapseActionView|withText">
+        </item>
+        <item
+            android:id="@+id/menu_show_last"
+            android:icon="@drawable/ic_menu_forward"
+            android:title="@string/menu_go_last_title">
+        </item>
+
+        <item
+            android:id="@+id/menu_command"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="@string/menu_command_title">
+        </item>
+        <item
+            android:id="@+id/menu_preferences"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_preferences_title">
+        </item>
+    </group>
+    
+</menu>

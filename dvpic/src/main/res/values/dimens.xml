@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <dimen name="app_padding">8dp</dimen>
+    <dimen name="summary_text_size">10sp</dimen>
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="button_text_size">17sp</dimen>
+    <dimen name="button_count_size">11sp</dimen>
+    
+    <!-- Dialog title height -->
+    <dimen name="dialog_title_height">64dip</dimen>
+    
+    <!--
+     The platform's desired minimum size for a dialog's width when it
+     is along the major axis (that is the screen is landscape).  This may
+     be either a fraction or a dimension.
+    -->
+    <item name="dialog_min_width_major" type="dimen">65%</item>
+    
+    <!--
+         The platform's desired minimum size for a dialog's width when it
+         is along the minor axis (that is the screen is portrait).  This may
+         be either a fraction or a dimension.
+    -->
+    <item name="dialog_min_width_minor" type="dimen">85%</item>
+</resources>

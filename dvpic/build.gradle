@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storePassword 'dv21112011'
+            keyAlias = 'dvpic'
+            keyPassword 'dv21112011'
+        }
+        release {
+            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storePassword 'dv21112011'
+            keyAlias = 'dvpic'
+            keyPassword 'dv21112011'
+        }
+    }
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
+    defaultConfig {
+        applicationId "ua.cv.westward.dvpic"
+        vectorDrawables.useSupportLibrary = true
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 189
+        versionName "1.89"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    lintOptions {
+        warning 'InvalidPackage'
+    }
+    flavorDimensions 'dimonvideo'
+    productFlavors {
+        DVPicGoogle {
+            dimension = 'dimonvideo'
+            applicationId = 'ua.cv.westward.dvpic'
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "FREE", "true"
+            versionNameSuffix "-google"
+        }
+        DVPicSamsung {
+            dimension = 'dimonvideo'
+            applicationId = 'ua.cv.westward.dvpic'
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "FREE", "false"
+            versionNameSuffix "-samsung"
+
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation ('org.simpleframework:simple-xml:2.7.1') {
+    exclude group: 'stax', module: 'stax-api'
+    exclude group: 'xpp3', module: 'xpp3'
+}
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+}

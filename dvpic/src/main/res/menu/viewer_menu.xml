@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DVPicActivity">
+    <group android:id="@+id/menu_image_actions">
+        <item android:id="@+id/menu_favorite" android:icon="@drawable/ic_menu_important"
+            android:title="@string/menu_favorite_title"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/menu_share"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/menu_share_title"
+            app:showAsAction="always" />
+    </group>
+    <item
+        android:id="@+id/menu_reload"
+        android:icon="@drawable/ic_menu_refresh"
+        android:title="@string/menu_reload_title" />
+    <group android:id="@+id/menu_image_group" >
+        <item
+            android:id="@+id/menu_show_first"
+            android:title="@string/menu_go_first_title"
+            android:icon="@drawable/ic_menu_back"
+            app:showAsAction="ifRoom|withText" />
+        <item
+            android:id="@+id/menu_show_last"
+            android:icon="@drawable/ic_menu_forward"
+            android:title="@string/menu_go_last_title" />
+
+        <item
+            android:id="@+id/menu_command"
+            android:icon="@android:drawable/ic_menu_set_as"
+            android:title="@string/menu_command_title"
+            android:visible="true" />
+        <item
+            android:id="@+id/menu_save"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="@string/menu_save_title" />
+    </group>
+    
+</menu>

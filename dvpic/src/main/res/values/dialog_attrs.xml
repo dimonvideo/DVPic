@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DialogTheme">
+        <attr name="minWidthMajor" format="dimension" />
+        <attr name="minWidthMinor" format="dimension" />
+    </declare-styleable>        
+</resources>
