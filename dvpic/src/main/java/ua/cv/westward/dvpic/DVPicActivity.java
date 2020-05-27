@@ -362,7 +362,7 @@ public class DVPicActivity extends AppCompatActivity
             }
             case R.id.menu_about2: {
 
-                String link = "https://dimonvideo.ru";
+                String link = "https://dimonvideo.ru/android/368838/";
                 if (BuildConfig.FLAVOR == "DVPicGoogle") {
                     link = "https://play.google.com/store/apps/dev?id=6091758746633814135";
                 }
