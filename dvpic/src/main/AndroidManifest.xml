@@ -74,7 +74,12 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/icon_widget_info" />
+
+
         </receiver>
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_notify" />
     </application>
 
 </manifest>
