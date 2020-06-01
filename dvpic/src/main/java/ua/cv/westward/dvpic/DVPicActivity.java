@@ -87,10 +87,26 @@ public class DVPicActivity extends AppCompatActivity
         dbAdapter = DBAdapter.getInstance( this );
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        if( savedInstanceState == null ) {
-            // welcome диалог
-        //    showWelcomeDialog();
+
+        final Intent serviceIntent = new Intent(getApplicationContext(), WorkerService.class);
+
+        serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
+
+        try {
+            getApplicationContext().startService(serviceIntent);
+        }catch ( Exception e1){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try { getApplicationContext().startForegroundService(serviceIntent);
+                } catch (Throwable ignored) {
+                }
+            }else {
+                try { getApplicationContext().startService(serviceIntent);
+                } catch (Throwable ignored) {
+                }
+            }
         }
+
+
         progressBar = DVPicActivity.this.findViewById(R.id.progressBar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
         // проверяем разрешения: если они уже есть,
