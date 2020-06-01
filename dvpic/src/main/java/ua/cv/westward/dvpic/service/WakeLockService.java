@@ -24,7 +24,7 @@ public abstract class WakeLockService extends IntentService {
 
         int importance = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            importance = NotificationManager.IMPORTANCE_LOW;
+            importance = NotificationManager.IMPORTANCE_MIN;
         }
 
         Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext());
@@ -77,7 +77,7 @@ public abstract class WakeLockService extends IntentService {
     abstract protected void execute( Intent intent );
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
-        int importance = NotificationManager.IMPORTANCE_LOW;
+        int importance = NotificationManager.IMPORTANCE_MIN;
         NotificationChannel chan = new NotificationChannel(getString(R.string.default_notification_channel_id), getString(R.string.default_notification_channel_name), importance);
         chan.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
         chan.setSound(null, null);
@@ -105,7 +105,12 @@ public abstract class WakeLockService extends IntentService {
             execute( intent );
         }
         finally {
-            getWakeLock( getApplicationContext() ).release();
+            try {
+                if (getWakeLock( getApplicationContext() ).isHeld()) getWakeLock( getApplicationContext() ).release();
+            } catch (Throwable th) {
+                // ignoring this exception, probably wakeLock was already released
+
+            }
         }
     }    
 }

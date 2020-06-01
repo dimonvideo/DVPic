@@ -88,7 +88,7 @@ public abstract class BaseImageHelper extends Context {
      */
     public int downloadImages() throws Exception {
         int count = 0;
-        int max = mSiteParams.getStorageSize() > 50 ? 50 : 50;
+        int max = mSiteParams.getStorageSize() > 50 ? 200 : 200;
        // sendProgressMessage( mSiteParams.getSiteTitle(), max, count );
 
         // Загрузить список изображений с сайта

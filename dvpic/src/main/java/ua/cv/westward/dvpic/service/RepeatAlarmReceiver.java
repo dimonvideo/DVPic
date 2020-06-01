@@ -28,7 +28,7 @@ public class RepeatAlarmReceiver extends BroadcastReceiver {
                     isConnectionAllowed( context, netinfo )) {
                 //
                 Preferences prefs = Preferences.getInstance( context );
-                // запустить сервис с параметрами (U)pdate, [DV,IDA] 
+
                 Intent i = new Intent( context, WorkerService.class );
                 i.putExtra( PrefKeys.INTENT_SERVICE_CMD, WorkerService.CMD_LOAD_IMAGES );
                 i.putExtra( PrefKeys.INTENT_GALLERY_ID, "DV");

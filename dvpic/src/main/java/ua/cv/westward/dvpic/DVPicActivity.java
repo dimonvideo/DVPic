@@ -82,16 +82,27 @@ public class DVPicActivity extends AppCompatActivity
 
         serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
 
+        SharedPreferences prefs = this.getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
+        int restartTime;
         try {
-            this.startService(serviceIntent);
-        }catch ( Exception e1){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                try { this.startForegroundService(serviceIntent);
-                } catch (Throwable ignored) {
-                }
-            }else {
-                try { this.startService(serviceIntent);
-                } catch (Throwable ignored) {
+            restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "0" ));
+        } catch( Exception e ) {
+            restartTime = 0;
+        }
+        if( restartTime > 0 ) {
+            try {
+                this.startService(serviceIntent);
+            } catch (Exception e1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    try {
+                        this.startForegroundService(serviceIntent);
+                    } catch (Throwable ignored) {
+                    }
+                } else {
+                    try {
+                        this.startService(serviceIntent);
+                    } catch (Throwable ignored) {
+                    }
                 }
             }
         }
