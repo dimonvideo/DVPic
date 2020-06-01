@@ -78,7 +78,23 @@ public class DVPicActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent serviceIntent = new Intent(this, WorkerService.class);
 
+        serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
+
+        try {
+            this.startService(serviceIntent);
+        }catch ( Exception e1){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                try { this.startForegroundService(serviceIntent);
+                } catch (Throwable ignored) {
+                }
+            }else {
+                try { this.startService(serviceIntent);
+                } catch (Throwable ignored) {
+                }
+            }
+        }
         setContentView(R.layout.main);
         setupPreferences();
         setupButtons();
@@ -88,23 +104,7 @@ public class DVPicActivity extends AppCompatActivity
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        final Intent serviceIntent = new Intent(getApplicationContext(), WorkerService.class);
 
-        serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
-
-        try {
-            getApplicationContext().startService(serviceIntent);
-        }catch ( Exception e1){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                try { getApplicationContext().startForegroundService(serviceIntent);
-                } catch (Throwable ignored) {
-                }
-            }else {
-                try { getApplicationContext().startService(serviceIntent);
-                } catch (Throwable ignored) {
-                }
-            }
-        }
 
 
         progressBar = DVPicActivity.this.findViewById(R.id.progressBar);
