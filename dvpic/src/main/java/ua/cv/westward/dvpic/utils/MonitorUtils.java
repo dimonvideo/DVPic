@@ -25,7 +25,7 @@ public class MonitorUtils {
             // установить неточный вызов сервиса
             assert alarmManager != null;
             alarmManager.setInexactRepeating( AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                              SystemClock.elapsedRealtime() + 60000,
+                    SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
                                               interval, pi );            
             DialogUtils.showToast( context, R.string.msg_alarm_start );
         } else {

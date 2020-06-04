@@ -10,6 +10,9 @@ import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.VideoView;
+
+import ua.cv.westward.dvpic.R;
 
 // http://www.zdnet.com/blog/burnette/how-to-use-multi-touch-in-android-2-part-6-implementing-the-pinch-zoom-gesture/1847?tag=mantle_skin;content
 // http://stackoverflow.com/questions/2537238/how-can-i-get-zoom-functionality-for-images
@@ -178,6 +181,9 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent( MotionEvent event ) {
+
+
+
         // handle touch events
         switch( event.getAction() & MotionEvent.ACTION_MASK ) {
         
@@ -254,7 +260,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
      */
     private boolean isZoomed() {
         float currentScale = mBaseMatrix.mapRadius( 1.0f );
-        return currentScale > mMinScale ? true : false;
+        return currentScale > mMinScale;
     }
 
 //    Log.i( "DVPic", Float.toString( currentScale ));

@@ -8,7 +8,7 @@ public enum Site {
         "DimonVideo.ru",
         DimonVideoHelper.class,
         "DimonVideo",
-        "https://api.dimonvideo.ru/smart/gapi.php?op=1",
+        "https://api.dimonvideo.ru/smart/gapi.php?op=11",
         "https://dimonvideo.ru/gallery/",
         false
     ),

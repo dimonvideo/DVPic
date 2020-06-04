@@ -3,12 +3,22 @@ package ua.cv.westward.dvpic.viewer;
 import java.io.File;
 import java.io.IOException;
 
+import ua.cv.westward.dvpic.FlipViewerActivity;
 import ua.cv.westward.dvpic.R;
 import ua.cv.westward.dvpic.types.ViewerOptions;
 import ua.cv.westward.dvpic.utils.BitmapUtils;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Handler;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 /**
  * Compound View, состоящий из ImageViewTouch и UI элементов, показывающих
@@ -22,6 +32,8 @@ public class ImageViewer extends BaseViewer {
 
     // UI references
     private final ImageViewTouch touchViewer;
+    private boolean bVideoIsBeingTouched = false;
+    private Handler mHandler = new Handler();
 
     /**
      * Конструктор класса.
@@ -69,8 +81,32 @@ public class ImageViewer extends BaseViewer {
      * об ошибке вместо изображения.
      * @param fname
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void setImage( String fname ) {
+
+        VideoView video = (VideoView) findViewById(R.id.videoImage);
+
+        video.setVisibility(VISIBLE);
+        video.setVideoURI(Uri.parse(fname));
+        video.requestFocus();
+        video.start();
+        video.setOnTouchListener((v, event) -> {
+            if (!bVideoIsBeingTouched) {
+                bVideoIsBeingTouched = true;
+                if (video.isPlaying()) {
+                    video.pause();
+                } else {
+                    video.resume();
+                }
+                mHandler.postDelayed(() -> bVideoIsBeingTouched = false, 100);
+            }
+            return true;
+        });
+
+
+
+        /*
         try {
             Bitmap bmp = BitmapUtils.decodeBitmap( new File(fname), IMAGE_MAX_SIZE );
             if( bmp != null ) {
@@ -81,5 +117,9 @@ public class ImageViewer extends BaseViewer {
         } catch( IOException e ) {
             setErrorMessage( e.getMessage() );
         }
+        */
+
     }
+
+
 }

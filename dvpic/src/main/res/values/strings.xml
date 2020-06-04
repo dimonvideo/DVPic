@@ -22,7 +22,7 @@
     <string name="msg_no_page_url">Для этой картинки нет отдельной веб-страницы</string>
     <string name="msg_siteid_error">Неправильный SiteID: %s</string>
     <string name="msg_sdcard_access_error">Ошибка доступа или записи на SD карту</string>
-    <string name="msg_bitmap_error">Ошибка декодирования битмапа\r\n(неверный формат файла?)</string>
+    <string name="msg_bitmap_error">Ошибка декодирования\n(неверный формат файла?)</string>
     <string name="msg_log_empty">Журнал пустой</string>
     
     <string name="msg_date_today">Сегодня</string>

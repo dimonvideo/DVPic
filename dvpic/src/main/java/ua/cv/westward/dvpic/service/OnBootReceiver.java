@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
  */
 public class OnBootReceiver extends BroadcastReceiver {
 
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive( Context context, Intent intent ) {
         SharedPreferences prefs = context.getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );

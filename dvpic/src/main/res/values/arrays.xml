@@ -53,7 +53,7 @@
     </string-array>
     <string-array name="auto_reload_values">
         <item>0</item>
-        <item>3600000</item>
+        <item>300000</item>
         <item>10800000</item>
         <item>21600000</item>
         <item>43200000</item>

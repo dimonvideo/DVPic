@@ -9,7 +9,6 @@ import ua.cv.westward.dvpic.service.WakeLockService;
 import ua.cv.westward.dvpic.service.WorkerService;
 import ua.cv.westward.dvpic.site.AppImage;
 import ua.cv.westward.dvpic.site.Gallery;
-import ua.cv.westward.dvpic.site.Site;
 import ua.cv.westward.dvpic.site.SiteParameters;
 import ua.cv.westward.dvpic.types.ImageToolbar;
 import ua.cv.westward.dvpic.types.ViewerOptions;
@@ -18,14 +17,11 @@ import ua.cv.westward.dvpic.utils.DialogUtils;
 import ua.cv.westward.dvpic.utils.InternetUtils;
 import ua.cv.westward.dvpic.utils.WarningDialog;
 import ua.cv.westward.dvpic.viewer.BaseViewer;
-import ua.cv.westward.dvpic.viewer.GifViewer;
 import ua.cv.westward.dvpic.viewer.ImageViewer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -770,11 +766,8 @@ public class FlipViewerActivity extends AppCompatActivity implements
 
             if( cursor.moveToPosition( position ) ) {
                 AppImage image = new AppImage( cursor );
-                if( image.getOption( AppImage.GIF_IMAGE )) {
-                    iv = new GifViewer( FlipViewerActivity.this, mOptions );
-                } else {
-                    iv = new ImageViewer( FlipViewerActivity.this, mOptions );
-                }
+                iv = new ImageViewer( FlipViewerActivity.this, mOptions );
+
                 iv.setData( image, position, getCount() );
             } else {
                 iv = new ImageViewer( FlipViewerActivity.this, mOptions );

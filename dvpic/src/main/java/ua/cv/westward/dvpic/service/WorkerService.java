@@ -61,7 +61,7 @@ public class WorkerService extends WakeLockService {
      * Получить настройки, касающиеся работы сервиса
      */
     private void getPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( getApplicationContext());
     }
 
     /**
@@ -71,7 +71,7 @@ public class WorkerService extends WakeLockService {
     protected void execute( Intent intent ) {
         // startup: get preferences, database instance
         getPreferences();
-        dbAdapter = DBAdapter.getInstance( this );
+        dbAdapter = DBAdapter.getInstance( getApplicationContext() );
 
 
         try {
@@ -125,7 +125,7 @@ public class WorkerService extends WakeLockService {
             LogRecord r = new LogRecord( "Служба", Result.ERROR, msg );
             dbAdapter.insertLog( r );
             // set error flag in preferences
-            LogPreferences.setErrorFlag( this, true );
+            LogPreferences.setErrorFlag( getApplicationContext(), true );
 
             showError( msg );
         }
@@ -160,11 +160,11 @@ public class WorkerService extends WakeLockService {
         String siteid = "DV";
             try {
                 // получить параметры сайта
-                siteParams = new SiteParameters( this, siteid );
+                siteParams = new SiteParameters( getApplicationContext(), siteid );
                 // создать экземпляр класса загрузки изображений
                 Class<?> cls = siteParams.getHelper();
                 Constructor<?> constructor = cls.getConstructor( Context.class, SiteParameters.class );
-                BaseImageHelper helper = (BaseImageHelper) constructor.newInstance( this, siteParams );
+                BaseImageHelper helper = (BaseImageHelper) constructor.newInstance( getApplicationContext(), siteParams );
                 // выполнить загрузку изображений
                 int c = helper.downloadImages();
                 count = count + c;
@@ -193,7 +193,7 @@ public class WorkerService extends WakeLockService {
                 LogRecord r = new LogRecord( siteParams.getSiteID(), Result.ERROR, msg );
                 dbAdapter.insertLog( r );
                 // set error flag in preferences
-                LogPreferences.setErrorFlag( this, true );
+                LogPreferences.setErrorFlag( getApplicationContext(), true );
 
                 String sb = siteParams.getSiteTitle() +
                         ' ' +
@@ -211,7 +211,7 @@ public class WorkerService extends WakeLockService {
 
 
         // обновить виджет
-        DialogUtils.updateWidget( this, total );
+        DialogUtils.updateWidget( getApplicationContext(), total );
         return count;
     }
 
@@ -224,14 +224,14 @@ public class WorkerService extends WakeLockService {
             return;
         // цикл удаления изображений из папок сайтов
         for( String siteid: siteIDs ) {
-            SiteParameters siteParams = new SiteParameters( this, siteid );
+            SiteParameters siteParams = new SiteParameters( getApplicationContext(), siteid );
             FileUtils.deleteFiles( siteParams.getImagesFolder() );
         }
         // удалить записи в базе данных
         dbAdapter.deleteImages( System.currentTimeMillis() );
         // получить общее количество новых картинок, обновить виджет
         int total = dbAdapter.getNewCount();
-        DialogUtils.updateWidget( this, total );
+        DialogUtils.updateWidget( getApplicationContext(), total );
     }
 
     /**
@@ -258,7 +258,7 @@ public class WorkerService extends WakeLockService {
         dbAdapter.updateImage( image );
 
         // получить параметры папки Избранное
-        SiteParameters siteParams = new SiteParameters( this, Gallery.FAV.name() );
+        SiteParameters siteParams = new SiteParameters( getApplicationContext(), Gallery.FAV.name() );
 
         // собрать новое полное имя файла
         String src = image.getFilename();

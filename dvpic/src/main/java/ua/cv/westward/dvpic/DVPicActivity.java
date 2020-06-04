@@ -78,11 +78,12 @@ public class DVPicActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Intent serviceIntent = new Intent(this, WorkerService.class);
+
+        final Intent serviceIntent = new Intent(getApplicationContext(), WorkerService.class);
 
         serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
 
-        SharedPreferences prefs = this.getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
         int restartTime;
         try {
             restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "0" ));
@@ -91,16 +92,16 @@ public class DVPicActivity extends AppCompatActivity
         }
         if( restartTime > 0 ) {
             try {
-                this.startService(serviceIntent);
+                getApplicationContext().startService(serviceIntent);
             } catch (Exception e1) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     try {
-                        this.startForegroundService(serviceIntent);
+                        getApplicationContext().startForegroundService(serviceIntent);
                     } catch (Throwable ignored) {
                     }
                 } else {
                     try {
-                        this.startService(serviceIntent);
+                        getApplicationContext().startService(serviceIntent);
                     } catch (Throwable ignored) {
                     }
                 }
@@ -111,7 +112,7 @@ public class DVPicActivity extends AppCompatActivity
         setupButtons();
         setupMisc();
         // setup database
-        dbAdapter = DBAdapter.getInstance( this );
+        dbAdapter = DBAdapter.getInstance( getApplicationContext() );
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
@@ -172,7 +173,7 @@ public class DVPicActivity extends AppCompatActivity
     };
     private boolean isPermissionGranted() {
         // проверяем разрешение - есть ли оно у нашего приложения
-        int permissionCheck = ActivityCompat.checkSelfPermission(this, DVPicActivity.WRITE_EXTERNAL_STORAGE_PERMISSION);
+        int permissionCheck = ActivityCompat.checkSelfPermission(getApplicationContext(), DVPicActivity.WRITE_EXTERNAL_STORAGE_PERMISSION);
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -201,7 +202,7 @@ public class DVPicActivity extends AppCompatActivity
 
     private void requestPermission() {
         // запрашиваем разрешение
-        ActivityCompat.requestPermissions(this, new String[]{DVPicActivity.WRITE_EXTERNAL_STORAGE_PERMISSION}, DVPicActivity.REQUEST_WRITE_EXTERNAL_STORAGE);
+        ActivityCompat.requestPermissions(DVPicActivity.this, new String[]{DVPicActivity.WRITE_EXTERNAL_STORAGE_PERMISSION}, DVPicActivity.REQUEST_WRITE_EXTERNAL_STORAGE);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
@@ -218,7 +219,7 @@ public class DVPicActivity extends AppCompatActivity
     protected void onDestroy() {
         // убрать callback на изменение настроек
         mPreferences.unregisterOnSharedPreferenceChangeListener( this );
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalBroadcast );
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mLocalBroadcast );
         super.onDestroy();
     }
 
