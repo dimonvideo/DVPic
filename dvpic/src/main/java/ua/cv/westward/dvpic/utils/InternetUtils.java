@@ -26,6 +26,7 @@ public class InternetUtils {
 
     public static boolean isConnected(@NonNull Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connMgr != null;
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
@@ -41,9 +42,11 @@ public class InternetUtils {
     private static boolean isConnected(@NonNull Context context, int type) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            assert connMgr != null;
             NetworkInfo networkInfo = connMgr.getNetworkInfo(type);
             return networkInfo != null && networkInfo.isConnected();
         } else {
+            assert connMgr != null;
             return isConnected(connMgr, type);
         }
     }
@@ -84,6 +87,7 @@ public class InternetUtils {
      */
     public static NetworkInfo getNetworkInfo( Context context ) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService( Context.CONNECTIVITY_SERVICE );
+        assert cm != null;
         return cm.getActiveNetworkInfo();
     }
         

@@ -113,7 +113,7 @@ public abstract class BaseViewer extends FrameLayout {
         mImage.setOption( AppImage.FAVORITE, newValue );
         internalSetFavorite( newValue );
         // если статус снимается с картинки в галерее Избранное
-        if( newValue == false && mImage.getSiteID().equals( Gallery.FAV.name() )) {
+        if( !newValue && mImage.getSiteID().equals( Gallery.FAV.name() )) {
             // вывести спиннер поверх картинки
             internalSetSpinner();
             // оптимизация совместной работы с адаптером ViewPager: если вьювер

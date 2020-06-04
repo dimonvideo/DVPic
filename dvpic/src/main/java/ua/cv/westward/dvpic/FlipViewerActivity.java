@@ -218,20 +218,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
                             showNext();
                             break;
                         }
-                        case ImageToolbar.ID_ZOOM_IN: {
-                            BaseViewer viewer = mAdapter.getCurrentViewer();
-                            if( viewer != null ) {
-                                viewer.zoomIn();
-                            }
-                            break;
-                        }
-                        case ImageToolbar.ID_ZOOM_OUT: {
-                            BaseViewer viewer = mAdapter.getCurrentViewer();
-                            if( viewer != null ) {
-                                viewer.zoomOut();
-                            }
-                            break;
-                        }
+
                     }
                 }
             });

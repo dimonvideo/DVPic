@@ -124,30 +124,6 @@ public class HttpHelper {
     }
 
     /**
-     * Submit url encoded string to the server
-     */
-    public void postUrlEncodedString( String url, String data )
-        throws IOException {
-        //
-        HttpURLConnection connection = newConnection( url );
-        try {
-            connection.setDoOutput( true );
-            connection.setFixedLengthStreamingMode( data.length() );
-            connection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded" );
-
-            try (PrintWriter writer = new PrintWriter(connection.getOutputStream())) {
-                // send data
-                writer.write(data);
-                writer.flush();
-                // check response
-                checkResponse(connection);
-            }
-        } finally {
-            connection.disconnect();
-        }
-    }
-    
-    /**
      * Retrieve HTTP URL to a file.
      */
     public void getFile( String url, File file ) throws IOException {

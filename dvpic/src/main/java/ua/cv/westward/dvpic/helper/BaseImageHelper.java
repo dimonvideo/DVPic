@@ -110,11 +110,11 @@ public abstract class BaseImageHelper extends Context {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             // determine image type
             String type = getImageType( image.getLink() );
-            if( type.equals( "gif" )) {
+            if( type.equals( "mp4" )) {
                 image.setOptions( AbstractImage.GIF_IMAGE );
                 if( !isNetworkAllowed( mSiteParams.getAllowedGifNetwork() )) {
                     // skip this gif image because it isn't allowed
-                    continue;
+                  //  continue;
                 }
             }
             // проверить, было ли изображение загружено ранее
@@ -152,7 +152,7 @@ public abstract class BaseImageHelper extends Context {
     protected void getImage( AbstractImage image ) throws IOException {
         // получить объект файловой системы
         String path = mSiteParams.getImagesFolder();
-        String ext = image.getOption( AbstractImage.GIF_IMAGE ) ? "gif" : "jpg";
+        String ext = image.getOption( AbstractImage.GIF_IMAGE ) ? "mp4" : "jpg";
         String fname = FileUtils.makeFileName( path, image.getImageID(), ext );
 
         mHttpHelper.getFile( image.getLink(), new File( fname ));

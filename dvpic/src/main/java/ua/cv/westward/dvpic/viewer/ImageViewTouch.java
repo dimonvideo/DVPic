@@ -190,9 +190,9 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
             case MotionEvent.ACTION_DOWN:
                 if( isZoomed() ) {
                     // Disallow ScrollView to intercept touch events.
-                    this.getParent().requestDisallowInterceptTouchEvent( true );                
+                    this.getParent().requestDisallowInterceptTouchEvent( true );
                 }
-                
+
                 //If being flinged and user touches, stop the fling.
 //                completeScroll();
                 mSavedMatrix.set( mBaseMatrix );
@@ -200,7 +200,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
                 mStart.set( event.getX(), event.getY() );
                 mTouchState = TouchState.DRAG;
                 break;
-                
+
             case MotionEvent.ACTION_POINTER_DOWN:
                 oldDistance = spacing( event );
                 if( oldDistance > 10f ) {
@@ -209,46 +209,28 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
                     mTouchState = TouchState.ZOOM;
                 }
                 break;
-                
+
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                
+
                 // Allow ScrollView to intercept touch events.
 //                this.getParent().requestDisallowInterceptTouchEvent(false);
-                
+
                 mTouchState = TouchState.NONE;
                 break;
-                
+
             case MotionEvent.ACTION_MOVE:
                 if( mTouchState == TouchState.DRAG ) {
                     mBaseMatrix.set( mSavedMatrix );
                     mBaseMatrix.postTranslate( event.getX() - mStart.x, event.getY() - mStart.y );
                     // limit pan
                     center( true, true );
-                } else if( mTouchState == TouchState.ZOOM ) {
-                    float newDistance = spacing( event );
-                    if( newDistance > 10f ) {
-                        mBaseMatrix.set( mSavedMatrix );
-                        float scale = newDistance / oldDistance;
-                        
-                        // limit zoom
-                        float currentScale = mBaseMatrix.mapRadius( 1.0f );
-                        if( scale * currentScale > mMaxScale ) {
-                            scale = mMaxScale / currentScale;
-                        } else if( scale * currentScale < mMinScale ) {
-                            scale = mMinScale / currentScale;
-//                            mZoomed = false;
-                        }                        
-                        mBaseMatrix.postScale( scale, scale, mid.x, mid.y );
-                        // limit pan
-                        center( true, true );
-                    }
                 }
                 break;
         }
-        
+
         // perform the image transformation
-        setImageMatrix( mBaseMatrix );        
+        setImageMatrix( mBaseMatrix );
         // indicate event was handled
         return true;
     }
