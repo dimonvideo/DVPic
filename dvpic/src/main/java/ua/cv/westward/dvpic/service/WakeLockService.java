@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -51,7 +52,8 @@ public abstract class WakeLockService extends IntentService {
     
     // запуск сервиса с WakeLock запросом
     public static void start( Context context, Intent intent ) {
-        getWakeLock( context ).acquire(10*60*1000L /*10 minutes*/);       // запросить WakeLock
+        getWakeLock( context );       // запросить WakeLock
+        Log.v("DVPic", "!!!! ====== WAKELOCK ======== !!!! ");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent);
@@ -69,7 +71,7 @@ public abstract class WakeLockService extends IntentService {
     @Override
     public int onStartCommand( Intent intent, int flags, int startId ) {
         if( !getWakeLock( getApplicationContext() ).isHeld() ) {  // fail-safe for crash restart
-            getWakeLock( getApplicationContext() ).acquire(10*60*1000L /*10 minutes*/);
+            getWakeLock( getApplicationContext() );
         }
         return super.onStartCommand( intent, flags, startId );
     }

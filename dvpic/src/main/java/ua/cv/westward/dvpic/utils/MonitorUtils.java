@@ -6,7 +6,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
 
 public class MonitorUtils {
     /**
@@ -20,13 +22,25 @@ public class MonitorUtils {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService( Context.ALARM_SERVICE );
         Intent intent = new Intent( context, RepeatAlarmReceiver.class );
         PendingIntent pi = PendingIntent.getBroadcast( context, 0, intent, 0 );
-        
+
         if( interval > 0 ) {
-            // установить неточный вызов сервиса
-            assert alarmManager != null;
-            alarmManager.setInexactRepeating( AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
-                                              interval, pi );            
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                assert alarmManager != null;
+                alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(SystemClock.elapsedRealtime() + interval, PendingIntent.getActivity(context, 0, new Intent(context, RepeatAlarmReceiver.class), PendingIntent.FLAG_CANCEL_CURRENT)), pi);
+            }
+            else if (Build.VERSION.SDK_INT >= 19) {
+                assert alarmManager != null;
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + interval, pi);
+            }
+            else {
+                assert alarmManager != null;
+                alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + interval, pi);
+            }
+
+
+            Log.v("DVPic", "!!!! ====== Монитор ======== !!!! " + interval);
+
             DialogUtils.showToast( context, R.string.msg_alarm_start );
         } else {
             assert alarmManager != null;

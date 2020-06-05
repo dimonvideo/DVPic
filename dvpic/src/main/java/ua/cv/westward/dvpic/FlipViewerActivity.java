@@ -797,6 +797,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
                         updateImage( newImgData );
                         // установить флаг "статус картинок изменился"
                         mImagesStatusChanged = true;
+
                     }
                     // уведомить viewer о том, что он становится активным
                     newViewer.notifySetActive( position, getCount() );
@@ -809,7 +810,6 @@ public class FlipViewerActivity extends AppCompatActivity implements
                 // нужно сбросить статус для изображения, которое было текущим.
                 if( currentViewer != null ) {
                     currentViewer.notifySetInactive();
-//                     currentViewer.setViewStatus( AppImage.STATUS_MARK );
                 }
                 // сохранить reference на новый ImageViewer
                 currentViewer = newViewer;
@@ -850,7 +850,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
             // просмотра всего курсора.
             int pos = cursor.getPosition();
             if( pos == -1 || pos >= count ) {
-                if( viewerPos == 1 || cursor.moveToPosition( viewerPos ) == false )
+                if( viewerPos == 1 || !cursor.moveToPosition(viewerPos))
                     cursor.moveToFirst();
             }
             // получить ID объекта (ImageViewer), позицию которого нам надо узнать
@@ -863,7 +863,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
                     viewer.setStatus( cursor.getInt( cursor.viewStatus ));
                     return cursor.getPosition();
                 }
-                if( cursor.moveToNext() == false ) {
+                if(!cursor.moveToNext()) {
                     cursor.moveToFirst();
                 }
                 count -= 1;
@@ -873,7 +873,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
 
         @Override
         public boolean isViewFromObject( View view, Object object ) {
-            return view == ((BaseViewer)object);
+            return view == object;
         }
 
 

@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 /**
  * Обработка broadcast сообщения на запуск сервиса
@@ -21,20 +24,19 @@ public class RepeatAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive( Context context, Intent intent ) {
-        if( InternetUtils.isBackgroundDataEnabled( context )) {
+
             // проверить наличие сетевого подключения и определить его тип
             NetworkInfo netinfo = InternetUtils.getNetworkInfo( context );
             if( netinfo != null && netinfo.isConnected() &&
                     isConnectionAllowed( context, netinfo )) {
-                //
-                Preferences prefs = Preferences.getInstance( context );
+                Log.v("DVPic", "!!!! ====== ALARM ======== !!!! ");
 
                 Intent i = new Intent( context, WorkerService.class );
                 i.putExtra( PrefKeys.INTENT_SERVICE_CMD, WorkerService.CMD_LOAD_IMAGES );
                 i.putExtra( PrefKeys.INTENT_GALLERY_ID, "DV");
                 WakeLockService.start( context, i );
             }
-        }
+
     }
     
     /**
@@ -43,10 +45,12 @@ public class RepeatAlarmReceiver extends BroadcastReceiver {
      */
     private boolean isConnectionAllowed( Context context, NetworkInfo netinfo ) {
         // получить настройку разрешенной сети передачи данных
-        SharedPreferences prefs = context.getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String allowedNetwork = prefs.getString( PrefKeys.NETWORK_TYPE, "WIFI" );
         int connType = netinfo.getType();
         //
+        Log.v("DVPic", "!!!! ====== Network ======== !!!! "+ connType);
+
         if( allowedNetwork.equals( "BOTH" )) {
             return true;
         } else if( allowedNetwork.equals( "WIFI" ) && connType == ConnectivityManager.TYPE_WIFI ) {

@@ -1,8 +1,10 @@
 package ua.cv.westward.dvpic.service;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -72,6 +74,7 @@ public class WorkerService extends WakeLockService {
         // startup: get preferences, database instance
         getPreferences();
         dbAdapter = DBAdapter.getInstance( getApplicationContext() );
+        Log.v("DVPic", "!!!! ====== WORKER SERVICE START ======== !!!! ");
 
 
         try {
@@ -83,8 +86,7 @@ public class WorkerService extends WakeLockService {
             int count = 0;
             switch( cmd ) {
                 case CMD_LOAD_IMAGES: {
-                 //   String[] siteIDs = intent.getStringArrayExtra( PrefKeys.INTENT_GALLERY_ID );
-                    count = downloadImages( "DV" );
+                    count = downloadImages();
                     break;
                 }
                 case CMD_DELETE_ALL_IMAGES: {
@@ -145,16 +147,15 @@ public class WorkerService extends WakeLockService {
     /**
      * Команда CMD_UPDATE_IMAGES.
      * Загрузить изображения с указанных сайтов.
-     * @param siteIDs
      */
-    private int downloadImages(String siteIDs ) throws Exception {
-        if( siteIDs == null )
-            return 0;
+    private int downloadImages() throws Exception {
+
+        String nextAlarm = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.NEXT_ALARM_FORMATTED);
+        Log.v("DVPic", "!!!! ====== DOWNLOAD IMAGES ======== !!!! " + nextAlarm);
 
         ImagesCleaner cleaner = new ImagesCleaner( dbAdapter );
 
         // цикл обработки запросов к сайтам
-        String errorMsg = null;
         SiteParameters siteParams = null;
         int count = 0;
         String siteid = "DV";
@@ -198,7 +199,6 @@ public class WorkerService extends WakeLockService {
                 String sb = siteParams.getSiteTitle() +
                         ' ' +
                         msg;
-                errorMsg = sb;
             }
 
 

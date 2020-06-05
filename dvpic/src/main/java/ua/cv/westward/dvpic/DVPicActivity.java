@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,29 +84,19 @@ public class DVPicActivity extends AppCompatActivity
 
         serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
 
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         int restartTime;
         try {
             restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "0" ));
         } catch( Exception e ) {
             restartTime = 0;
         }
+
+        Log.v("DVPic", "!!!! ======= Главное окно ======= !!!! " + restartTime);
+
         if( restartTime > 0 ) {
-            try {
-                getApplicationContext().startService(serviceIntent);
-            } catch (Exception e1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    try {
-                        getApplicationContext().startForegroundService(serviceIntent);
-                    } catch (Throwable ignored) {
-                    }
-                } else {
-                    try {
-                        getApplicationContext().startService(serviceIntent);
-                    } catch (Throwable ignored) {
-                    }
-                }
-            }
+            MonitorUtils.setAlarm( getApplicationContext(), 10000 );
+
         }
         setContentView(R.layout.main);
         setupPreferences();

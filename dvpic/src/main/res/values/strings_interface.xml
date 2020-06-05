@@ -3,9 +3,9 @@
     <string name="btn_ok_title">OK</string>
     <string name="btn_close_title">Закрыть</string>
     <string name="btn_cancel_title">Отмена</string>
-    <string name="btn_new_images_title">Новые картинки</string>
+    <string name="btn_new_images_title">Новые приколы</string>
     <string name="btn_favorites_title">Избранное</string>
-    <string name="btn_sites_title">Все картинки</string>
+    <string name="btn_sites_title">Все приколы</string>
 
     <string name="menu_alert_title">Ошибка</string>
     <string name="menu_reload_all_title">Обновить</string>
@@ -28,7 +28,7 @@
     <string name="dialog_site_select">Выбор сайта</string>
     
     <string name="command_open_page">Открыть веб-страницу картинки</string>
-    <string name="command_copy_url">Скопировать ссылку на картинку</string>
+    <string name="command_copy_url">Скопировать ссылку на прикол</string>
     <string name="command_copy_bb_url">Скопировать ссылку в BB-коде</string>
     <string name="command_mark_read_all">Отметить все как просмотренные</string>
     

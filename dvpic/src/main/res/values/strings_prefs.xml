@@ -2,10 +2,10 @@
 <resources>
     <string name="prefs_main_screen_title">Главное окно и виджет</string>
     <string name="prefs_main_screen_summary">внешний вид главного окна, опции виджета</string>
-    <string name="prefs_view_screen_title">Просмотр картинок</string>
-    <string name="prefs_view_screen_summary">внешний вид окна просмотра картинок</string>    
-    <string name="prefs_pics_management_title">Управление картинками</string>
-    <string name="prefs_pics_management_summary">варианты загрузки и удаления картинок</string>
+    <string name="prefs_view_screen_title">Просмотр картинок и видео</string>
+    <string name="prefs_view_screen_summary">внешний вид окна просмотра</string>
+    <string name="prefs_pics_management_title">Управление картинками и видео</string>
+    <string name="prefs_pics_management_summary">варианты загрузки и удаления картинок и видео</string>
     <string name="prefs_notifications_title">Уведомления</string>
     <string name="prefs_notifications_summary">Настройки уведомлений</string>
     <string name="prefs_service_title">Служебные команды</string>
@@ -18,38 +18,33 @@
     
     <string name="pref_show_toolbar_title">Панель кнопок</string>
     <string name="pref_show_toolbar_summary">варианты отображения панели кнопок</string>
-    <string name="pref_show_image_title_title">Заголовок картинки</string>
-    <string name="pref_show_image_title_summary">показывать заголовок картинки (если имеется)</string>
-    <string name="pref_show_image_id_title">ID картинки</string>
-    <string name="pref_show_image_id_summary">показывать идентификатор картинки</string>
+    <string name="pref_show_image_title_title">Заголовок</string>
+    <string name="pref_show_image_title_summary">показывать заголовок картинки или видео (если имеется)</string>
+    <string name="pref_show_image_id_title">ID картинки или видео</string>
+    <string name="pref_show_image_id_summary">показывать идентификатор</string>
     <string name="pref_show_image_num_title">Порядковый номер</string>
-    <string name="pref_show_image_num_summary">показывать порядковый номер картинки</string>
+    <string name="pref_show_image_num_summary">показывать порядковый номер</string>
     <string name="pref_show_image_info_title">Информация сайта</string>
     <string name="pref_show_image_info_summary">показывать автора, дату размещения (если имеется)</string>
     <string name="pref_fullscreen_title">Полноэкраный режим</string>
     <string name="pref_fullscreen_summary">скрывать строку состояния при просмотре картинок</string>
     <string name="pref_volume_buttons_title">Кнопки громкости</string>
-    <string name="pref_volume_buttons_summary">использовать кнопки управления громкостью для листания картинок</string>
+    <string name="pref_volume_buttons_summary">использовать кнопки управления громкостью для листания приколов</string>
     <string name="pref_new_exit_title">Выход после просмотра</string>
-    <string name="pref_new_exit_summary">выход из приложения, когда просмотрены все новые картинки</string>
+    <string name="pref_new_exit_summary">выход из приложения, когда просмотрены все новые картинки и видео</string>
     
     <string name="pref_network_type_title">Выбор мобильной сети</string>
     <string name="pref_network_type_summary">тип подключения для автоматической загрузки картинок</string>
-    <string name="pref_gif_type_title">Загрузка анимированных GIF</string>
-    <string name="pref_gif_type_summary">тип подключения для загрузки анимированных GIF картинок</string>
+    <string name="pref_gif_type_title">Загрузка видеоприколов</string>
+    <string name="pref_gif_type_summary">тип подключения для загрузки видеоприколов</string>
     <string name="pref_auto_reload_title">Автозагрузка картинок</string>
-    <string name="pref_auto_reload_summary">загрузка новых картинок через указанный интервал</string>
+    <string name="pref_auto_reload_summary">загрузка новых картинок и видео через указанный интервал</string>
     <string name="pref_storage_favorites_titles">Избранное</string>
-    <string name="pref_storage_dv_title">Картинки</string>
-    <string name="pref_storage_title">Макс. количество картинок</string>
-    <string name="pref_storage_summary">максимальное количество картинок</string>
-    <string name="pref_storage_summary2">максимальное количество картинок, опция не использовать этот сайт в приложении</string>
-    
-    <string name="pref_notification_show_title">Показывать уведомления</string>
-    <string name="pref_notification_show_summary">Показывать уведомления о загрузке новых картинок</string>
-    <string name="pref_notification_auto_hide_title">Убирать уведомления</string>
-    <string name="pref_notification_auto_hide_summary">автоматически убирать уведомления через 5 минут</string>
+    <string name="pref_storage_dv_title">Картинки и видео</string>
+    <string name="pref_storage_title">Макс. количество приколов</string>
+    <string name="pref_storage_summary">максимальное количество картинок и видео</string>
+    <string name="pref_storage_summary2">максимальное количество картинок и видео, опция не использовать этот сайт в приложении</string>
     
     <string name="pref_service_delete_all_title">Удалить все</string>
-    <string name="pref_service_delete_all_summary">удалить все картинки приложения с карты памяти</string>   
+    <string name="pref_service_delete_all_summary">удалить все картинки и видео приложения с карты памяти</string>
 </resources>
