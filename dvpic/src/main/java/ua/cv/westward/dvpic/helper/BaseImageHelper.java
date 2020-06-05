@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -112,9 +113,9 @@ public abstract class BaseImageHelper extends Context {
             String type = getImageType( image.getLink() );
             if( type.equals( "mp4" )) {
                 image.setOptions( AbstractImage.GIF_IMAGE );
-                if( !isNetworkAllowed( mSiteParams.getAllowedGifNetwork() )) {
+                if(( !isNetworkAllowed( mSiteParams.getAllowedGifNetwork() )) && (Build.VERSION.SDK_INT <= 23)) {
                     // skip this gif image because it isn't allowed
-                  //  continue;
+                    continue;
                 }
             }
             // проверить, было ли изображение загружено ранее
