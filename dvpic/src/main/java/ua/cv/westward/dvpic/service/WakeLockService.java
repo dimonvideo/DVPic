@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
@@ -13,7 +14,11 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import java.util.Objects;
+
 import ua.cv.westward.dvpic.R;
+
+import static android.content.Intent.getIntent;
 
 public abstract class WakeLockService extends IntentService {
 
@@ -25,13 +30,15 @@ public abstract class WakeLockService extends IntentService {
 
         int importance = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            importance = NotificationManager.IMPORTANCE_MIN;
+            importance = NotificationManager.IMPORTANCE_LOW;
         }
 
         Notification.Builder notificationBuilder = new Notification.Builder(getApplicationContext());
-        notificationBuilder.setSmallIcon(R.drawable.ic_notify)
+        notificationBuilder
+                .setSmallIcon(R.drawable.ic_notify)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
                 .setContentTitle(getString(R.string.app_name)) //
-                .setContentText(getString(R.string.app_name) + R.string.msg_download_start) //
+                .setContentText(getString(R.string.msg_download_start)) //
                 .setPriority(importance)
                 .setOnlyAlertOnce(true)
                 .setOngoing(true)
@@ -79,7 +86,7 @@ public abstract class WakeLockService extends IntentService {
     abstract protected void execute( Intent intent );
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
-        int importance = NotificationManager.IMPORTANCE_MIN;
+        int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel chan = new NotificationChannel(getString(R.string.default_notification_channel_id), getString(R.string.default_notification_channel_name), importance);
         chan.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
         chan.setSound(null, null);
@@ -92,8 +99,9 @@ public abstract class WakeLockService extends IntentService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.default_notification_channel_id));
         Notification notification = notificationBuilder
                 .setSmallIcon(R.drawable.ic_notify)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon))
                 .setContentTitle(getString(R.string.app_name)) //
-                .setContentText(getString(R.string.app_name)) //
+                .setContentText(getString(R.string.msg_download_start)) //
                 .setPriority(importance)
                 .setOnlyAlertOnce(true)
                 .setOngoing(true)

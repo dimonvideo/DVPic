@@ -34,12 +34,16 @@ import com.google.android.datatransport.BuildConfig;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
-import android.os.Build;
 
 import javax.net.ssl.SSLContext;
 
@@ -55,8 +59,6 @@ import ua.cv.westward.dvpic.utils.ActivityUtils;
 import ua.cv.westward.dvpic.utils.DialogUtils;
 import ua.cv.westward.dvpic.utils.FileUtils;
 import ua.cv.westward.dvpic.utils.InternetUtils;
-import ua.cv.westward.dvpic.utils.MonitorUtils;
-import ua.cv.westward.dvpic.utils.Utils;
 import ua.cv.westward.dvpic.utils.WarningDialog;
 
 public class DVPicActivity extends AppCompatActivity
@@ -84,20 +86,6 @@ public class DVPicActivity extends AppCompatActivity
 
         serviceIntent.setAction(String.valueOf(WorkerService.CMD_LOAD_IMAGES));
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        int restartTime;
-        try {
-            restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "0" ));
-        } catch( Exception e ) {
-            restartTime = 0;
-        }
-
-        Log.v("DVPic", "!!!! ======= Главное окно ======= !!!! " + restartTime);
-
-        if( restartTime > 0 ) {
-            MonitorUtils.setAlarm( getApplicationContext(), 10000 );
-
-        }
         setContentView(R.layout.main);
         setupPreferences();
         setupButtons();
@@ -107,7 +95,25 @@ public class DVPicActivity extends AppCompatActivity
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-
+        try {
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setApplicationId("1:100440464526:android:08a8e654a322dd7e703ddf") // Required for Analytics.
+                    .setProjectId("dvpic-16c7c") // Required for Firebase Installations.
+                    .setApiKey("AIzaSyDeFs3eZwksmcyt1mGRk0c1kyJ9nP1jaFE") // Required for Auth.
+                    .build();
+            FirebaseApp.initializeApp(this, options, "DVPic");
+            FirebaseMessaging.getInstance().subscribeToTopic("all")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("DVPIC", " === подписано ===");
+                        if (!task.isSuccessful()) {
+                            Log.d("DVPIC", " === не подписано ===");
+                        }
+                    }
+                });
+        } catch (Exception ignored) {
+        }
 
 
         progressBar = DVPicActivity.this.findViewById(R.id.progressBar);
@@ -115,18 +121,22 @@ public class DVPicActivity extends AppCompatActivity
         // проверяем разрешения: если они уже есть,
         // то приложение продолжает работу в нормальном режиме
         if (isPermissionGranted()) {
+
             try {
-                try {
-                    ProviderInstaller.installIfNeeded(getApplicationContext());
-                    SSLContext sslContext;
-                    sslContext = SSLContext.getInstance("TLSv1.2");
-                    sslContext.init(null, null, null);
-                    sslContext.createSSLEngine();
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException
-                        | NoSuchAlgorithmException | KeyManagementException e) {
-                    e.printStackTrace();
-                }
+                ProviderInstaller.installIfNeeded(getApplicationContext());
+                SSLContext sslContext;
+                sslContext = SSLContext.getInstance("TLSv1.2");
+                sslContext.init(null, null, null);
+                sslContext.createSSLEngine();
+            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException
+                    | NoSuchAlgorithmException | KeyManagementException e) {
+                e.printStackTrace();
+            }
+
+            try {
+
                 FileUtils.checkBaseAppPath();
+
                 if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
 
             } catch (Exception e) {
@@ -325,12 +335,8 @@ public class DVPicActivity extends AppCompatActivity
         // установить новое значение интервала для сервиса
         if( key.equals( PrefKeys.AUTO_RELOAD_TIME )) {
             int restartTime;
-            try {
-                restartTime = Integer.parseInt( prefs.getString( key, "0" ));
-            } catch( Exception e ) {
-                restartTime = 0;
-            }
-            MonitorUtils.setAlarm( getApplicationContext(), restartTime );
+
+
         }
         // ORIENTATION
         else if( key.equals( PrefKeys.ORIENTATION )) {
@@ -492,14 +498,6 @@ public class DVPicActivity extends AppCompatActivity
     }
 
     /* WELCOME DIALOG */
-
-    private void showWelcomeDialog() {
-        int version = mPreferences.getInt( PrefKeys.APP_VERSION, -1 );
-        if( version != Utils.getVersion( this )) {
-            Intent i = new Intent( this, WelcomeActivity.class );
-            startActivity( i );
-        }
-    }
 
     /* SITE SELECTION DIALOG */
 

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <ua.cv.westward.dvpic.viewer.ImageViewTouch
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
+    android:layout_height="match_parent">
     <VideoView
         android:id="@+id/videoImage"
         android:layout_width="match_parent"
@@ -15,6 +11,26 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"
         android:layout_gravity="center" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:src="@drawable/mute"
+        android:contentDescription="@string/submit"
+        android:layout_margin="20dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/button_text_color"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"/>
+
+    <ua.cv.westward.dvpic.viewer.ImageViewTouch
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
+
 
     <LinearLayout
         android:id="@+id/title_bar"
@@ -45,7 +61,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_status_green"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/app_name" />
 
     <TextView
         android:id="@+id/message"
@@ -64,5 +81,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_menu_not_important"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="@string/app_name" />
+
 </merge>

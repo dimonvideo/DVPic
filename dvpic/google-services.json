@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "100440464526-qmm8ve168oqccuopnsfgb3debpegn9ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.cv.westward.dvpic",
+            "certificate_hash": "3207eb761b342721c259dc53423a7c0cfd37c68c"
+          }
+        },
+        {
           "client_id": "100440464526-3esetu141946mau5hqrpt90fmlrg6mtm.apps.googleusercontent.com",
           "client_type": 3
         }

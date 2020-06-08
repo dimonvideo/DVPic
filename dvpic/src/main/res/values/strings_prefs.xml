@@ -34,11 +34,11 @@
     <string name="pref_new_exit_summary">выход из приложения, когда просмотрены все новые картинки и видео</string>
     
     <string name="pref_network_type_title">Выбор мобильной сети</string>
-    <string name="pref_network_type_summary">тип подключения для автоматической загрузки картинок</string>
+    <string name="pref_network_type_summary">тип подключения для автозагрузки картинок</string>
     <string name="pref_gif_type_title">Загрузка видеоприколов</string>
     <string name="pref_gif_type_summary">тип подключения для загрузки видеоприколов</string>
-    <string name="pref_auto_reload_title">Автозагрузка картинок</string>
-    <string name="pref_auto_reload_summary">загрузка новых картинок и видео через указанный интервал</string>
+    <string name="pref_auto_reload_title">Автозагрузка</string>
+    <string name="pref_auto_reload_summary">загрузка новых картинок и видео по мере добавления на сервер или вручную</string>
     <string name="pref_storage_favorites_titles">Избранное</string>
     <string name="pref_storage_dv_title">Картинки и видео</string>
     <string name="pref_storage_title">Макс. количество приколов</string>

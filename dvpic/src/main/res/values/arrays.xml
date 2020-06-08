@@ -44,20 +44,12 @@
         <item>OFF</item>
         </string-array>
     <string-array name="auto_reload_names">
-        <item>Вручную</item>
-        <item>1 час</item>
-        <item>3 часа</item>
-        <item>6 часов</item>
-        <item>12 часов</item>
-        <item>1 день</item>
+        <item>Автоматически</item>
+        <item>Вручную, по кнопке Обновить</item>
     </string-array>
     <string-array name="auto_reload_values">
+        <item>1</item>
         <item>0</item>
-        <item>3600000</item>
-        <item>10800000</item>
-        <item>21600000</item>
-        <item>43200000</item>
-        <item>86400000</item>
     </string-array>
     <string-array name="storage_amount_values">
         <item>50</item>

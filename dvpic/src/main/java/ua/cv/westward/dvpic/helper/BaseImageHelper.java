@@ -1,6 +1,7 @@
 package ua.cv.westward.dvpic.helper;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -31,6 +32,7 @@ import android.view.Display;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.File;
@@ -46,6 +48,7 @@ import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ua.cv.westward.dvpic.R;
 import ua.cv.westward.dvpic.db.DBAdapter;
 import ua.cv.westward.dvpic.helper.net.HttpHelper;
 import ua.cv.westward.dvpic.helper.retrier.RetriableTask;
@@ -89,7 +92,7 @@ public abstract class BaseImageHelper extends Context {
      */
     public int downloadImages() throws Exception {
         int count = 0;
-        int max = mSiteParams.getStorageSize() > 50 ? 200 : 200;
+        int max = mSiteParams.getStorageSize() > 150 ? 150 : 150;
        // sendProgressMessage( mSiteParams.getSiteTitle(), max, count );
 
         // Загрузить список изображений с сайта
@@ -108,6 +111,8 @@ public abstract class BaseImageHelper extends Context {
         while( li.hasPrevious() ) {
             AbstractImage image = li.previous();
             intent.putExtra("progress", String.valueOf(count+1)); // progress update
+
+
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
             // determine image type
             String type = getImageType( image.getLink() );
