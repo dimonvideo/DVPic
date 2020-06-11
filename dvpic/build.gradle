@@ -25,8 +25,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 201
-        versionName "2.0"
+        versionCode 202
+        versionName "2.1"
     }
     buildTypes {
         release {
@@ -72,5 +72,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
+
 
 }

@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 
 import android.text.ClipboardManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -205,20 +206,32 @@ public class FlipViewerActivity extends AppCompatActivity implements
 
         mToolbar = (ImageToolbar) findViewById( R.id.toolbar );
         if( mToolbar != null ) {
-            mToolbar.setOnClickListener( new OnClickListener() {
-                @Override
-                public void onClick( View v ) {
-                    int cmd = (Integer) v.getTag();
-                    switch( cmd ) {
-                        case ImageToolbar.ID_BACK: {
-                            showPrevious();
-                            break;
-                        }
-                        case ImageToolbar.ID_FORWARD: {
-                            showNext();
-                            break;
-                        }
+            mToolbar.setOnClickListener(v -> {
+                int cmd = (Integer) v.getTag();
+                switch( cmd ) {
+                    case ImageToolbar.ID_BACK: {
+                        showPrevious();
+                        break;
+                    }
+                    case ImageToolbar.ID_FORWARD: {
+                        showNext();
+                        break;
+                    }
+                    case ImageToolbar.ID_ZOOM_IN: {
+                        Log.d("DVPIC", " === не подписано ===");
+                        BaseViewer viewer = mAdapter.getCurrentViewer();
+                        if( viewer != null ) {
+                            viewer.zoomIn();
 
+                        }
+                        break;
+                    }
+                    case ImageToolbar.ID_ZOOM_OUT: {
+                        BaseViewer viewer = mAdapter.getCurrentViewer();
+                        if( viewer != null ) {
+                            viewer.zoomOut();
+                        }
+                        break;
                     }
                 }
             });
@@ -227,6 +240,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
         // получить флаги внешнего вида ImageViewer'ов
         mOptions = new ViewerOptions( prefs );
     }
+
 
     /**
      * Стартовая настройка ViewPager

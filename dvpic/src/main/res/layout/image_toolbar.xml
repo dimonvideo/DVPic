@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="5dp"
-            android:src="@drawable/toolbar_previous_item" />
+            android:layout_alignParentStart="true"
+            android:paddingStart="5dp"
+            android:src="@drawable/toolbar_previous_item"
+            tools:ignore="RtlSymmetry"
+            android:contentDescription="@string/zoom" />
         <ImageView
             android:id="@+id/forward_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingRight="5dp"
-            android:src="@drawable/toolbar_next_item" />
-
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="5dp"
+            android:src="@drawable/toolbar_next_item"
+            tools:ignore="RtlSymmetry"
+            android:contentDescription="@string/zoom" />
+        <ImageView
+            android:id="@+id/zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/forward_btn"
+            android:paddingEnd="5dp"
+            android:src="@drawable/toolbar_zoom_in"
+            tools:ignore="RtlSymmetry"
+            android:contentDescription="@string/zoom" />
+        <ImageView
+            android:id="@+id/zoom_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/zoom_in"
+            android:paddingEnd="5dp"
+            android:src="@drawable/toolbar_zoom_out"
+            tools:ignore="RtlSymmetry"
+            android:contentDescription="@string/zoom" />
 </merge>

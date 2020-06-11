@@ -1,25 +1,17 @@
 package ua.cv.westward.dvpic;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.Objects;
 
 import ua.cv.westward.dvpic.service.WakeLockService;
 import ua.cv.westward.dvpic.service.WorkerService;
@@ -32,11 +24,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Intent i = new Intent( this, WorkerService.class );
+        Intent i = new Intent( getApplicationContext(), WorkerService.class );
         i.putExtra( PrefKeys.INTENT_SERVICE_CMD, WorkerService.CMD_LOAD_IMAGES );
         i.putExtra( PrefKeys.INTENT_GALLERY_ID, "DV");
         int restartTime;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "1" ));
         // проверить наличие сетевого подключения и определить его тип
         NetworkInfo netinfo = InternetUtils.getNetworkInfo( getApplicationContext() );
@@ -44,7 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 isConnectionAllowed( getApplicationContext(), netinfo )) {
 
 
-            if (restartTime > 0) WakeLockService.start(this, i);
+            if (restartTime > 0) WakeLockService.start(getApplicationContext(), i);
         }
 
         assert netinfo != null;

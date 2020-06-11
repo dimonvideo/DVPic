@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.MediaController;
@@ -58,25 +59,30 @@ public class ImageViewer extends BaseViewer {
     @Override
     public void recycle() {
         BitmapDrawable d = (BitmapDrawable) touchViewer.getDrawable();
-        if (d != null) {
+        if( d != null ) {
             Bitmap bmp = d.getBitmap();
             bmp.recycle();
+            bmp = null;
         }
-    }
-
-    @Override
-    public void zoomIn() {
-
-    }
-
-    @Override
-    public void zoomOut() {
-
     }
 
     /* SETTERS */
 
+    /**
+     * Увеличить масштаб изображения.
+     */
+    @Override
+    public void zoomIn() {
+        touchViewer.zoomIn();
+    }
 
+    /**
+     * Уменьшить масштаб изображения.
+     */
+    @Override
+    public void zoomOut() {
+        touchViewer.zoomOut();
+    }
     /**
      * Загрузить указанную картинку из файла. В случае ошибки вывести информацию
      * об ошибке вместо изображения.
@@ -94,7 +100,6 @@ public class ImageViewer extends BaseViewer {
             video.setVisibility(VISIBLE);
             video.setVideoURI(Uri.fromFile(new File(fname)));
             video.requestFocus();
-
             try {
 
                 video.setOnPreparedListener(mp -> {
@@ -137,7 +142,14 @@ public class ImageViewer extends BaseViewer {
             try {
                 Bitmap bmp = BitmapUtils.decodeBitmap(new File(fname), IMAGE_MAX_SIZE);
                 if (bmp != null) {
+
+
+
                     touchViewer.setImageBitmap(bmp);
+
+
+
+
                 } else {
                     setErrorMessage(getContext().getString(R.string.msg_bitmap_error));
                 }
