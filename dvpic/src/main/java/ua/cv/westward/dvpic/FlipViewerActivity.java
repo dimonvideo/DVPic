@@ -46,6 +46,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.fragment.app.DialogFragment;
@@ -761,8 +762,9 @@ public class FlipViewerActivity extends AppCompatActivity implements
          * @return Returns an Object representing the new page.  This does not
          * need to be a View, but can be some other container of the page.
          */
+        @NonNull
         @Override
-        public Object instantiateItem( ViewGroup collection, int position ) {
+        public Object instantiateItem(@NonNull ViewGroup collection, int position ) {
             BaseViewer iv;
 
             if( cursor.moveToPosition( position ) ) {
