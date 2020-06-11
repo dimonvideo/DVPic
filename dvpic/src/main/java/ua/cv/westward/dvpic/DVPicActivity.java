@@ -99,7 +99,6 @@ public class DVPicActivity extends AppCompatActivity
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setApplicationId("1:100440464526:android:08a8e654a322dd7e703ddf") // Required for Analytics.
                     .setProjectId("dvpic-16c7c") // Required for Firebase Installations.
-                    .setApiKey("AIzaSyDeFs3eZwksmcyt1mGRk0c1kyJ9nP1jaFE") // Required for Auth.
                     .build();
             FirebaseApp.initializeApp(this, options, "DVPic");
             FirebaseMessaging.getInstance().subscribeToTopic("all")

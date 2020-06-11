@@ -51,7 +51,6 @@ public abstract class BaseViewer extends FrameLayout {
 
     /**
      * Вернуть позицию картинки в галерее
-     * @return
      */
     public int getPosition() {
         return mPosition;
@@ -59,7 +58,6 @@ public abstract class BaseViewer extends FrameLayout {
 
     /**
      * Вернуть статус "Избранное" текущего вьювера
-     * @return
      */
     public boolean isFavorite() {
         return mImage.getOption( AppImage.FAVORITE );
@@ -98,7 +96,6 @@ public abstract class BaseViewer extends FrameLayout {
     /**
      * Установить или снять статус "Новая картинка"
      *
-     * @param newStatus
      */
     public void setStatus( int newStatus ) {
         mImage.setViewStatus( newStatus );
@@ -107,7 +104,6 @@ public abstract class BaseViewer extends FrameLayout {
 
     /**
      * Установить или снять статус "Избранное"
-     * @param newValue
      */
     public void setFavorite( boolean newValue ) {
         mImage.setOption( AppImage.FAVORITE, newValue );
@@ -168,10 +164,7 @@ public abstract class BaseViewer extends FrameLayout {
 
     /* INTERNAL */
 
-    /**
-     * Включить либо выключить индикатор "новое" для изображения.
-     * @param newStatus Новый статус просмотра изображения.
-     */
+
 //    private void updateViewStatus() {
 //        if( statusImage != null ) {
 //            if( mImage.getStatus() == AppImage.STATUS_NEW ) {
@@ -185,7 +178,6 @@ public abstract class BaseViewer extends FrameLayout {
 
     /**
      * Включить или выключить индикатор кнопки "Избранное"
-     * @param value
      */
     private void internalSetFavorite( boolean value ) {
         if( favoriteImage != null ) {
@@ -195,7 +187,6 @@ public abstract class BaseViewer extends FrameLayout {
 
     /**
      * Включить или выключить индикатор "Новая картинка"
-     * @param value
      */
     private void internalSetStatus( boolean value ) {
         if( statusImage != null ) {
@@ -228,14 +219,14 @@ public abstract class BaseViewer extends FrameLayout {
             sb.append( mCount );
         }
         // info
-        if( mOptions.showImageInfo() ) {
+      //  if( mOptions.showImageInfo() ) {
 
             // site data
-            if( mImage.getSiteDate() != null ) {
-                sb.append( ' ' );
-                sb.append( mImage.getSiteDate() );
-            }
-        }
+          //  if( mImage.getSiteDate() != null ) {
+            //    sb.append( ' ' );
+             //   sb.append( mImage.getSiteDate() );
+           // }
+      //  }
         mSubtitleText.setText( sb.toString() );
     }
 }

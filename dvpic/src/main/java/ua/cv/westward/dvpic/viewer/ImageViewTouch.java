@@ -1,6 +1,5 @@
 package ua.cv.westward.dvpic.viewer;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -10,9 +9,6 @@ import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.widget.ImageView;
-import android.widget.VideoView;
-
-import ua.cv.westward.dvpic.R;
 
 // http://www.zdnet.com/blog/burnette/how-to-use-multi-touch-in-android-2-part-6-implementing-the-pinch-zoom-gesture/1847?tag=mantle_skin;content
 // http://stackoverflow.com/questions/2537238/how-can-i-get-zoom-functionality-for-images
@@ -23,10 +19,10 @@ import ua.cv.westward.dvpic.R;
 // http://stackoverflow.com/questions/6422697/vertical-fling-scrolling-of-text-line-in-android !!!
 
 /**
- * 
+ *
  */
 public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView {
-    
+
     // This matrix is recomputed when we go from the thumbnail image to
     // the full size image.
     private Matrix mBaseMatrix = new Matrix();
@@ -54,13 +50,13 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
     // Zooming limits
     private float mMinScale = 1.0f;
     private float mMaxScale = 4.0f;
-    
+
     static final float SCALE_RATE = 1.25F;
-    
+
     protected Runnable mOnLayoutRunnable = null;
-    
+
     protected enum Command { CENTER, MOVE, ZOOM, LAYOUT, RESET; }
-    
+
     public ImageViewTouch( Context context ) {
         super( context );
         init();
@@ -69,11 +65,11 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
     public ImageViewTouch( Context context, AttributeSet attrs )
     {
         super( context, attrs );
-        init();    
+        init();
     }
-    
+
     /**
-     * 
+     *
      */
     protected void init()
     {
@@ -84,17 +80,17 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
 //        mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
 //        mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
-    
+
     /**
-     * Called from layout when this view should assign a size and position to each of its children.  
+     * Called from layout when this view should assign a size and position to each of its children.
      */
     @Override
     protected void onLayout( boolean changed, int left, int top, int right, int bottom ) {
         super.onLayout( changed, left, top, right, bottom );
-        
+
         mThisWidth = right - left;
         mThisHeight = bottom - top;
-        
+
         Runnable r = mOnLayoutRunnable;
         if( r != null ) {
             mOnLayoutRunnable = null;
@@ -105,7 +101,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
             setImageMatrix( mBaseMatrix );
         }
     }
-    
+
     /**
      * Sets a Bitmap as the content of this ImageView.
      */
@@ -114,7 +110,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         super.setImageBitmap( bitmap );
         mBitmapDisplayed = bitmap;
     }
-    
+
     public void clear()
     {
         setImageBitmapReset( null, true );
@@ -134,8 +130,8 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         zoomOut( SCALE_RATE );
     }
 
-    /** DYNAMIC SCROLL/FLING */    
-    
+    /** DYNAMIC SCROLL/FLING */
+
 /*    @Override
     public void computeScroll() {
         if( !mScroller.isFinished() ) {
@@ -157,7 +153,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         // Done with scroll, clean up state.
         completeScroll();
     }*/
-    
+
 /*    private void endDrag() {
         if( mVelocityTracker != null ) {
             mVelocityTracker.recycle();
@@ -175,18 +171,14 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
             scrollTo( x, y );
         }
     }*/
-    
+
     /** TOUCH EVENT HANDLING */
-        
-    @SuppressLint("ClickableViewAccessibility")
+
     @Override
     public boolean onTouchEvent( MotionEvent event ) {
-
-
-
         // handle touch events
         switch( event.getAction() & MotionEvent.ACTION_MASK ) {
-        
+
             case MotionEvent.ACTION_DOWN:
                 if( isZoomed() ) {
                     // Disallow ScrollView to intercept touch events.
@@ -225,6 +217,24 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
                     mBaseMatrix.postTranslate( event.getX() - mStart.x, event.getY() - mStart.y );
                     // limit pan
                     center( true, true );
+                } else if( mTouchState == TouchState.ZOOM ) {
+                    float newDistance = spacing( event );
+                    if( newDistance > 10f ) {
+                        mBaseMatrix.set( mSavedMatrix );
+                        float scale = newDistance / oldDistance;
+
+                        // limit zoom
+                        float currentScale = mBaseMatrix.mapRadius( 1.0f );
+                        if( scale * currentScale > mMaxScale ) {
+                            scale = mMaxScale / currentScale;
+                        } else if( scale * currentScale < mMinScale ) {
+                            scale = mMinScale / currentScale;
+//                            mZoomed = false;
+                        }
+                        mBaseMatrix.postScale( scale, scale, mid.x, mid.y );
+                        // limit pan
+                        center( true, true );
+                    }
                 }
                 break;
         }
@@ -246,23 +256,23 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
     }
 
 //    Log.i( "DVPic", Float.toString( currentScale ));
-    
+
     /**
      * Determine the space between the first two fingers
      */
     private float spacing( MotionEvent event ) {
-       float x = event.getX(0) - event.getX(1);
-       float y = event.getY(0) - event.getY(1);
-       return ( x * x + y * y );
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
     }
 
     /**
      * Calculate the mid point of the first two fingers
      */
     private void midPoint( PointF point, MotionEvent event ) {
-       float x = event.getX(0) + event.getX(1);
-       float y = event.getY(0) + event.getY(1);
-       point.set( x / 2, y / 2 );
+        float x = event.getX(0) + event.getX(1);
+        float y = event.getY(0) + event.getY(1);
+        point.set( x / 2, y / 2 );
     }
 
     /** ZOOM */
@@ -275,12 +285,12 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         if( mBitmapDisplayed == null ) {
             return;
         }
-        
+
         float currentScale = mBaseMatrix.mapRadius( 1.0f );
         if( currentScale >= mMaxScale ) {
             return; // Don't let the user zoom into the molecular level.
         }
-        // check max limit for new scale ( newScale = currentScale * rate) 
+        // check max limit for new scale ( newScale = currentScale * rate)
         if( currentScale * rate > mMaxScale ) {
             rate = mMaxScale / currentScale;
         }
@@ -290,7 +300,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
 
         mBaseMatrix.postScale( rate, rate, cx, cy );
         setImageMatrix( mBaseMatrix );
-        
+
         // limit zoom
 //        float scale = newDistance / oldDistance;
 //        float currentScale = mBaseMatrix.mapRadius( 1.0f );
@@ -319,7 +329,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         if( currentScale * rate < mMinScale ) {
             rate = mMinScale / currentScale;
         }
-        
+
         float cx = getWidth() / 2F;
         float cy = getHeight() / 2F;
 
@@ -336,11 +346,11 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         } else {
             mSuppMatrix.postScale(1F / rate, 1F / rate, cx, cy);
         }*/
-    }    
-    
+    }
+
     /**
      * Setup the base matrix so that the image is centered and scaled properly.
-     * @param bitmap
+
      */
     private void getInitialBaseMatrix( Bitmap bitmap ) {
         float viewWidth = getWidth();
@@ -356,7 +366,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         float heightScale = Math.min( viewHeight / h, 2.0f );
         float scale = Math.min( widthScale, heightScale );
 
-        mMinScale = scale; 
+        mMinScale = scale;
         mBaseMatrix.postScale( scale, scale );
         mBaseMatrix.postTranslate((viewWidth - w * scale) / 2F, (viewHeight - h * scale) / 2F);
     }
@@ -418,14 +428,13 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
         matrix.getValues( mMatrixValues );
         return mMatrixValues[whichValue];
     }*/
-    
+
     /** UNDISCOVERED SOURCE LIBRARY CODE */
-    
+
     /**
      * This function changes bitmap, reset base matrix according to the size
      * of the bitmap, and optionally reset the supplementary matrix.
-     * @param bitmap
-     * @param reset
+
      */
     public void setImageBitmapReset( final Bitmap bitmap, final boolean reset ) {
         final int viewWidth = getWidth();
@@ -437,7 +446,7 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
             };
             return;
         }
-        
+
         if ( bitmap != null ) {
             getInitialBaseMatrix( bitmap );
             setImageBitmap( bitmap );
@@ -445,11 +454,11 @@ public class ImageViewTouch extends androidx.appcompat.widget.AppCompatImageView
             mBaseMatrix.reset();
             setImageBitmap( null );
         }
-        
+
 //        if ( reset ) {
 //            mSuppMatrix.reset();
 //        }
-        
+
         setImageMatrix( mBaseMatrix );
 //        mMaxZoom = maxZoom();
     }
