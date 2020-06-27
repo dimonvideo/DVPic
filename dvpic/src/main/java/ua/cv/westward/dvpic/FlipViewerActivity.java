@@ -110,6 +110,8 @@ public class FlipViewerActivity extends AppCompatActivity implements
             mSiteIds = new String[] { mGallery.name() };
         }
 
+        if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this );
         // получить настройки
         if( prefs.getBoolean( PrefKeys.VOLUME_BUTTONS, false )) {

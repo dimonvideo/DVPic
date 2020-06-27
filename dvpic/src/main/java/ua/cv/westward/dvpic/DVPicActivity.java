@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +46,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -114,6 +119,32 @@ public class DVPicActivity extends AppCompatActivity
         } catch (Exception ignored) {
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+
+            ShortcutManager shortcutManager = getSystemService(ShortcutManager.class);
+
+            ShortcutInfo favShortcut = new ShortcutInfo.Builder(this, "shortcut_fav")
+                    .setShortLabel(getString(R.string.btn_favorites_title))
+                    .setIcon(Icon.createWithResource(this, R.drawable.icon))
+                    .setIntents(
+                            new Intent[]{
+                                    new Intent(Intent.ACTION_MAIN, Uri.EMPTY, DVPicActivity.this, FlipViewerActivity.class).putExtra( PrefKeys.INTENT_GALLERY_ID, "FAV" ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK),
+                            })
+                    .build();
+
+            ShortcutInfo newShortcut = new ShortcutInfo.Builder(this, "shortcut_new")
+                    .setShortLabel(getString(R.string.btn_new_images_title))
+                    .setIcon(Icon.createWithResource(this, R.drawable.icon))
+                    .setIntents(
+                            new Intent[]{
+                                    new Intent(Intent.ACTION_MAIN, Uri.EMPTY, DVPicActivity.this, FlipViewerActivity.class).putExtra( PrefKeys.INTENT_GALLERY_ID, "DV" ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK),
+                            })
+                    .build();
+
+            assert shortcutManager != null;
+            shortcutManager.setDynamicShortcuts(Arrays.asList(favShortcut, newShortcut));
+
+        }
 
         progressBar = DVPicActivity.this.findViewById(R.id.progressBar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
