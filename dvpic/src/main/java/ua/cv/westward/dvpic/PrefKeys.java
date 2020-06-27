@@ -10,7 +10,6 @@ public class PrefKeys {
     // пути к папке приложения на sdcard (все пути без / в начале и конце)
     public static final String SD_BASE_PATH       = "Android/data/ua.cv.westward.dvpic";
     public static final String SD_FILES_PATH      = "Android/data/ua.cv.westward.dvpic/files";
-    public static final String SD_THEMES_PATH     = "Android/data/ua.cv.westward.dvpic/themes";
 
     public static final String SD_COPY_FOLDER     = "download"; // папка для копирования картинок на sdcard
 

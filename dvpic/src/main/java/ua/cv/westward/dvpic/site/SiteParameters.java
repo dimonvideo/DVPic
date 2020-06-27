@@ -1,5 +1,6 @@
 package ua.cv.westward.dvpic.site;
 
+import java.io.File;
 import java.io.IOException;
 
 import ua.cv.westward.dvpic.PrefKeys;

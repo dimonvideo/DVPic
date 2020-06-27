@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import ua.cv.westward.dvpic.PrefKeys;
+
+import android.content.Context;
 import android.os.Environment;
 
 import static android.os.Environment.getExternalStorageState;
@@ -25,7 +27,7 @@ public class FileUtils {
 
         // проверить возможность записи на sdcard
         String state = getExternalStorageState();
-        if( state.equals( Environment.MEDIA_MOUNTED ) == false ) {
+        if(!state.equals(Environment.MEDIA_MOUNTED)) {
             throw new IOException( state );
         }
 
@@ -44,7 +46,7 @@ public class FileUtils {
         sb.append( File.separatorChar );
         sb.append( ".nomedia" );
         File f = new File( sb.toString() );
-        if( f.isFile() == false ) {
+        if(!f.isFile()) {
             f.createNewFile();
         }
     }
@@ -71,8 +73,8 @@ public class FileUtils {
         
         // проверить наличие папки
         File fpath = new File( fp );
-        if( fpath.isDirectory() == false ) {
-            if( fpath.mkdirs() == false ) {
+        if(!fpath.isDirectory()) {
+            if(!fpath.mkdirs()) {
                 throw new IOException( "SD card write error" );
             }
         }
@@ -96,10 +98,7 @@ public class FileUtils {
     public static boolean isStorageMounted() {
         // проверить возможность записи на sdcard
         String state = getExternalStorageState();
-        if( state.equals( Environment.MEDIA_MOUNTED )) {
-            return true;
-        }
-        return false;
+        return state.equals(Environment.MEDIA_MOUNTED);
     }
     
     /**
@@ -110,12 +109,10 @@ public class FileUtils {
      * @return Полное имя файла.
      */
     public static String makeFileName( String path, String name, String ext ) {
-        StringBuilder sb = new StringBuilder( path );
-        sb.append( File.separatorChar );        
-        sb.append( name );
-        sb.append( '.' );
-        sb.append( ext );
-        return sb.toString();
+        return path + File.separatorChar +
+                name +
+                '.' +
+                ext;
     }
 
     /**
@@ -151,27 +148,24 @@ public class FileUtils {
      * @param dst Имя результирующего файла.
      * @throws IOException 
      */
-    public static void copyFile( String src, String dst ) throws IOException {        
-        FileInputStream in = null;
-        FileOutputStream out = null;
-        try {
-            in = new FileInputStream( src );
-            out = new FileOutputStream( dst ); 
-        
+    public static void copyFile( String src, String dst ) throws IOException {
+        try (FileInputStream in = new FileInputStream(src);
+             FileOutputStream out = new FileOutputStream(dst)) {
+
             // transfer bytes from in to out
             byte[] buffer = new byte[4096];
             int len;
-            while( (len = in.read( buffer )) != -1 ) {
-                out.write( buffer, 0, len );
-            }
-        } finally {
-            if( in != null ) {
-                in.close();
-            }
-            if( out != null ) {
-                out.close();
+            while ((len = in.read(buffer)) != -1) {
+                out.write(buffer, 0, len);
             }
         }
     }
-    
+
+    private File getAbsoluteFile(String relativePath, Context context) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return new File(context.getExternalFilesDir(null), relativePath);
+        } else {
+            return new File(context.getFilesDir(), relativePath);
+        }
+    }
 }

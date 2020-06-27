@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
@@ -15,7 +18,6 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import ua.cv.westward.dvpic.service.WakeLockService;
 import ua.cv.westward.dvpic.service.WorkerService;
-import ua.cv.westward.dvpic.utils.InternetUtils;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -31,16 +33,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         restartTime = Integer.parseInt( prefs.getString( PrefKeys.AUTO_RELOAD_TIME, "1" ));
         // проверить наличие сетевого подключения и определить его тип
-        NetworkInfo netinfo = InternetUtils.getNetworkInfo( getApplicationContext() );
-        if( netinfo != null && netinfo.isConnected() &&
-                isConnectionAllowed( getApplicationContext(), netinfo )) {
-
-
-            if (restartTime > 0) WakeLockService.start(getApplicationContext(), i);
+        if (getConnectionType(MyFirebaseMessagingService.this) > 0) {
+            if (restartTime > 0) WakeLockService.start(MyFirebaseMessagingService.this, i);
         }
-
-        assert netinfo != null;
-      //  Log.v("DVPic", "!!!! ====== NOTICE ======== !!!! " + restartTime);
+        //  Log.v("DVPic", "!!!! ====== NOTICE ======== !!!! " + restartTime);
 
     }
 
@@ -49,22 +45,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("DVPIC", "Refreshed token: " + token);
 
     }
-    /**
-     * Сравнить настройку NETWORK_TYPE и текущий тип подключения, принять решение
-     * о запуске сервиса.
-     */
-    private boolean isConnectionAllowed(Context context, NetworkInfo netinfo ) {
-        // получить настройку разрешенной сети передачи данных
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String allowedNetwork = prefs.getString( PrefKeys.NETWORK_TYPE, "WIFI" );
-        int connType = netinfo.getType();
-        //
-       // Log.v("DVPic", "!!!! ====== Network ======== !!!! "+ connType);
 
-        if( allowedNetwork.equals( "BOTH" )) {
-            return true;
-        } else if( allowedNetwork.equals( "WIFI" ) && connType == ConnectivityManager.TYPE_WIFI ) {
-            return true;
-        } else return allowedNetwork.equals("GSM") && connType == ConnectivityManager.TYPE_MOBILE;
+    @IntRange(from = 0, to = 3)
+    public static int getConnectionType(Context context) {
+        int result = 0; // Returns connection type. 0: none; 1: mobile data; 2: wifi
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (cm != null) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+                if (capabilities != null) {
+                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        result = 2;
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        result = 1;
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                        result = 3;
+                    }
+                }
+            }
+        } else {
+            if (cm != null) {
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                if (activeNetwork != null) {
+                    // connected to the internet
+                    if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                        result = 2;
+                    } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                        result = 1;
+                    } else if (activeNetwork.getType() == ConnectivityManager.TYPE_VPN) {
+                        result = 3;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
