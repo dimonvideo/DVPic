@@ -5,28 +5,28 @@ apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
         }
         release {
-            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "ua.cv.westward.dvpic"
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
-        targetSdkVersion 29
-        versionCode 222
-        versionName "2.2"
+        targetSdkVersion 30
+        versionCode 223
+        versionName "2.3"
     }
     buildTypes {
         release {
@@ -61,17 +61,17 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation ('org.simpleframework:simple-xml:2.7.1') {
     exclude group: 'stax', module: 'stax-api'
     exclude group: 'xpp3', module: 'xpp3'
 }
-    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
     implementation 'androidx.preference:preference:1.1.1'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.1'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
 
 
 }

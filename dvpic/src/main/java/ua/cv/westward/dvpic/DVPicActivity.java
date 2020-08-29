@@ -107,13 +107,10 @@ public class DVPicActivity extends AppCompatActivity
                     .build();
             FirebaseApp.initializeApp(this, options, "DVPic");
             FirebaseMessaging.getInstance().subscribeToTopic("all")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("DVPIC", " === подписано ===");
-                        if (!task.isSuccessful()) {
-                            Log.d("DVPIC", " === не подписано ===");
-                        }
+                .addOnCompleteListener(task -> {
+                    Log.d("DVPIC", " === подписано ===");
+                    if (!task.isSuccessful()) {
+                        Log.d("DVPIC", " === не подписано ===");
                     }
                 });
         } catch (Exception ignored) {
