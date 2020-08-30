@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ua.cv.westward.dvpic.db.DBAdapter;
 import ua.cv.westward.dvpic.db.ImageCursorWrapper;
+import ua.cv.westward.dvpic.helper.BaseImageHelper;
 import ua.cv.westward.dvpic.service.WakeLockService;
 import ua.cv.westward.dvpic.service.WorkerService;
 import ua.cv.westward.dvpic.site.AppImage;
@@ -509,6 +510,10 @@ public class FlipViewerActivity extends AppCompatActivity implements
             // получить параметры сайта
             SiteParameters siteParams = new SiteParameters( this, "DV" );
             String url = siteParams.getWebPageURL( image.getImageID() );
+
+            String type = BaseImageHelper.getImageType( image.getLink() );
+            if( type.equals( "mp4" )) url = siteParams.getVideoPageURL( image.getImageID() );
+
             if( url != null ) {
                 Intent i = new Intent( "android.intent.action.VIEW", Uri.parse( url ));
                 startActivity( i );

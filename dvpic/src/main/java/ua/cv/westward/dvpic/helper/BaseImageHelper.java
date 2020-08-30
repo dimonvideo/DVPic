@@ -34,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.preference.PreferenceManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +49,7 @@ import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import ua.cv.westward.dvpic.PrefKeys;
 import ua.cv.westward.dvpic.R;
 import ua.cv.westward.dvpic.db.DBAdapter;
 import ua.cv.westward.dvpic.helper.net.HttpHelper;
@@ -90,11 +92,11 @@ public abstract class BaseImageHelper extends Context {
      * порядке для того, чтобы самые новые изображения получили более позднюю
      * отметку даты и времени.
      */
-    public int downloadImages() throws Exception {
+    public int downloadImages(Context context) throws Exception {
         int count = 0;
         int max = mSiteParams.getStorageSize() > 150 ? 150 : 150;
-       // sendProgressMessage( mSiteParams.getSiteTitle(), max, count );
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean is_video = prefs.getBoolean( PrefKeys.SHOW_VIDEO, true);
         // Загрузить список изображений с сайта
         List<? extends AbstractImage> images = getImagesList();
         // вычислить, сколько изображений будет обрабатываться
@@ -118,6 +120,8 @@ public abstract class BaseImageHelper extends Context {
             String type = getImageType( image.getLink() );
             if( type.equals( "mp4" )) {
                 image.setOptions( AbstractImage.GIF_IMAGE );
+
+                if (!is_video) continue;
                 if(( !isNetworkAllowed( mSiteParams.getAllowedGifNetwork() )) && (Build.VERSION.SDK_INT <= 23)) {
                     // skip this gif image because it isn't allowed
                     continue;
@@ -126,7 +130,7 @@ public abstract class BaseImageHelper extends Context {
             // проверить, было ли изображение загружено ранее
             if(!mDBAdapter.isImageExists(image)) {
                 // загрузить изображение, добавить информацию в базу данных
-                downloadImage( image );
+                downloadImage( image, context );
                 mDBAdapter.insertImage( image );
                 count += 1;
 
@@ -145,9 +149,9 @@ public abstract class BaseImageHelper extends Context {
     /**
      * Load image, repeat task 5 times with 1000 ms delay
      */
-    private void downloadImage( final AbstractImage image ) throws Exception {
+    private void downloadImage( final AbstractImage image, Context context ) throws Exception {
         new RetriableTask<Void>(() -> {
-            getImage( image );
+            getImage( image, context );
             return null;
         }).call();
     }
@@ -155,9 +159,9 @@ public abstract class BaseImageHelper extends Context {
     /**
      * Загрузить изображение
      */
-    protected void getImage( AbstractImage image ) throws IOException {
+    protected void getImage( AbstractImage image, Context context ) throws IOException {
         // получить объект файловой системы
-        String path = mSiteParams.getImagesFolder();
+        String path = mSiteParams.getImagesFolder(context);
         String ext = image.getOption( AbstractImage.GIF_IMAGE ) ? "mp4" : "jpg";
         String fname = FileUtils.makeFileName( path, image.getImageID(), ext );
 
@@ -166,7 +170,7 @@ public abstract class BaseImageHelper extends Context {
         image.setFilename( fname );
     }
 
-    private String getImageType( String link ) {
+    public static String getImageType(String link) {
         int i = link.lastIndexOf( '.' );
         if( i > 0 && i < link.length()-1 ) {
             return link.substring( i + 1 ).toLowerCase( Locale.US );

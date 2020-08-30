@@ -162,12 +162,12 @@ public class DVPicActivity extends AppCompatActivity
 
             try {
 
-                FileUtils.checkBaseAppPath();
+                FileUtils.checkBaseAppPath(getApplicationContext());
 
                 if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
 
             } catch (Exception e) {
-                String sb = getString(R.string.msg_sdcard_access_error) + '\n' +
+                String sb = getString(R.string.msg_sdcard_access_error) + "\n\n" +
                         DialogUtils.shortErrorMessage(e);
                 DialogFragment errorDialog = WarningDialog.newInstance(R.string.dialog_error_title, sb);
                 errorDialog.show(getSupportFragmentManager(), "ERROR");
@@ -211,11 +211,11 @@ public class DVPicActivity extends AppCompatActivity
         if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
-                    FileUtils.checkBaseAppPath();
+                    FileUtils.checkBaseAppPath(getApplicationContext());
                     if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
 
                 } catch (Exception e) {
-                    String sb = getString(R.string.msg_sdcard_access_error) + '\n' +
+                    String sb = getString(R.string.msg_sdcard_access_error) + "\n--\n" +
                             DialogUtils.shortErrorMessage(e);
                     DialogFragment errorDialog = WarningDialog.newInstance(R.string.dialog_error_title, sb);
                     errorDialog.show(getSupportFragmentManager(), "ERROR");
@@ -357,16 +357,7 @@ public class DVPicActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged( SharedPreferences prefs, String key ) {
-        // AUTO_RELOAD_TIME
-        // если изменился интервал загрузки изображений и включен сервис,
-        // установить новое значение интервала для сервиса
-        if( key.equals( PrefKeys.AUTO_RELOAD_TIME )) {
-            int restartTime;
-
-
-        }
-        // ORIENTATION
-        else if( key.equals( PrefKeys.ORIENTATION )) {
+   if( key.equals( PrefKeys.ORIENTATION )) {
             ActivityUtils.setOrientation( this, prefs.getString( key, "AUTO" ));
         }
     }
@@ -392,7 +383,7 @@ public class DVPicActivity extends AppCompatActivity
      * Выбор какого-либо пункта системного меню.
      */
     @Override
-    public boolean onOptionsItemSelected( MenuItem item ) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item ) {
         super.onOptionsItemSelected( item );
 
         switch( item.getItemId() ) {

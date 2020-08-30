@@ -1,15 +1,25 @@
 package ua.cv.westward.dvpic.service;
 
 import android.app.AlarmManager;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.util.Locale;
 
@@ -148,10 +158,7 @@ public class WorkerService extends WakeLockService {
      * Команда CMD_UPDATE_IMAGES.
      * Загрузить изображения с указанных сайтов.
      */
-    private int downloadImages() throws Exception {
-
-        String nextAlarm = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.NEXT_ALARM_FORMATTED);
-        Log.v("DVPic", "!!!! ====== DOWNLOAD IMAGES ======== !!!! " + nextAlarm);
+    private int downloadImages() {
 
         ImagesCleaner cleaner = new ImagesCleaner( dbAdapter );
 
@@ -167,7 +174,7 @@ public class WorkerService extends WakeLockService {
                 Constructor<?> constructor = cls.getConstructor( Context.class, SiteParameters.class );
                 BaseImageHelper helper = (BaseImageHelper) constructor.newInstance( getApplicationContext(), siteParams );
                 // выполнить загрузку изображений
-                int c = helper.downloadImages();
+                int c = helper.downloadImages(getApplicationContext());
                 count = count + c;
 
 
@@ -195,10 +202,6 @@ public class WorkerService extends WakeLockService {
                 dbAdapter.insertLog( r );
                 // set error flag in preferences
                 LogPreferences.setErrorFlag( getApplicationContext(), true );
-
-                String sb = siteParams.getSiteTitle() +
-                        ' ' +
-                        msg;
             }
 
 
@@ -225,7 +228,7 @@ public class WorkerService extends WakeLockService {
         // цикл удаления изображений из папок сайтов
         for( String siteid: siteIDs ) {
             SiteParameters siteParams = new SiteParameters( getApplicationContext(), siteid );
-            FileUtils.deleteFiles( siteParams.getImagesFolder() );
+            FileUtils.deleteFiles( siteParams.getImagesFolder(getApplicationContext()) );
         }
         // удалить записи в базе данных
         dbAdapter.deleteImages( System.currentTimeMillis() );
@@ -240,13 +243,41 @@ public class WorkerService extends WakeLockService {
      */
     private void copyImage( AppImage image ) throws IOException {
         // собрать имя результирующего файла
-        String path = FileUtils.getPathSD( PrefKeys.SD_COPY_FOLDER, null );
+        String path = FileUtils.getPathSD( PrefKeys.SD_COPY_FOLDER, null, getApplicationContext() );
 
-        String sb = path + File.separatorChar +
-                image.getSiteID() +
-                '_' +
-                FileUtils.splitFileName(image.getFilename());
-        FileUtils.copyFile( image.getFilename(), sb);
+        String sb = path + File.separatorChar + FileUtils.splitFileName(image.getFilename());
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getFilename());
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+
+            ContentResolver resolver = getApplicationContext().getContentResolver();
+            Bitmap bitmap;
+            Uri uri;
+            try {
+                // Requires permission WRITE_EXTERNAL_STORAGE
+                bitmap = BitmapFactory.decodeFile( image.getFilename());
+                uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            } catch (Exception e) {
+                Log.e("LOG_TAG", "Error inserting picture in MediaStore: " + e.getMessage());
+                return;
+            }
+            assert uri != null;
+            try (OutputStream stream = resolver.openOutputStream(uri)) {
+                if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)) {
+                    throw new IOException("Error compressing the picture.");
+                }
+            } catch (Exception e) {
+                resolver.delete(uri, null, null);
+                Log.e("LOG_TAG", "Error adding picture to gallery: " + e.getMessage());
+            }
+
+        } else FileUtils.copyFile( image.getFilename(), sb);
     }
 
     /**
@@ -262,7 +293,7 @@ public class WorkerService extends WakeLockService {
 
         // собрать новое полное имя файла
         String src = image.getFilename();
-        String dst = siteParams.getImagesFolder() + File.separatorChar +
+        String dst = siteParams.getImagesFolder(getApplicationContext()) + File.separatorChar +
                 FileUtils.splitFileName(src);
 
         // скопировать файл картинки в папку Избранное

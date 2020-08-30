@@ -1,13 +1,16 @@
 package ua.cv.westward.dvpic.utils;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import ua.cv.westward.dvpic.PrefKeys;
 
-import android.content.Context;
-import android.os.Environment;
+import ua.cv.westward.dvpic.PrefKeys;
 
 import static android.os.Environment.getExternalStorageState;
 
@@ -21,7 +24,7 @@ public class FileUtils {
      * Если невозможно создать подкаталог, выбросить исключение.
      * @throws IOException 
      */
-    public static void checkBaseAppPath() throws IOException {
+    public static void checkBaseAppPath(Context context) throws IOException {
 
 
 
@@ -32,13 +35,17 @@ public class FileUtils {
         }
 
         StringBuilder sb = new StringBuilder( Environment.getExternalStorageDirectory().getPath() );
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) sb = new StringBuilder( context.getFilesDir().getPath());
+
         sb.append( File.separatorChar );
         sb.append( PrefKeys.SD_BASE_PATH );
         // проверить наличие базового подкаталога приложения
         File fpath = new File( sb.toString() );
+        Log.e("111", sb.toString());
         if(!fpath.isDirectory()) {
             if(!fpath.mkdirs()) {
-                throw new IOException( "SD card write error" );
+                throw new IOException( "SD card write error #1" );
             }
         }
         
@@ -60,10 +67,14 @@ public class FileUtils {
      * @return Полный путь к указанной папке.
      * @throws IOException 
      */
-    public static String getPathSD( String basePath, String folderPath )
+    public static String getPathSD( String basePath, String folderPath, Context context )
             throws IOException {
+
         StringBuilder sb = new StringBuilder( Environment.getExternalStorageDirectory().getPath() );
-        sb.append( File.separatorChar );        
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) sb = new StringBuilder( context.getFilesDir().getPath());
+
+        sb.append( File.separatorChar );
         sb.append( basePath );
         if( folderPath != null ) {
             sb.append( File.separatorChar );        
@@ -75,10 +86,10 @@ public class FileUtils {
         File fpath = new File( fp );
         if(!fpath.isDirectory()) {
             if(!fpath.mkdirs()) {
-                throw new IOException( "SD card write error" );
+                throw new IOException( "SD card write error #2" );
             }
         }
-        return fp;
+            return fp;
     }
     
     /**
@@ -161,11 +172,4 @@ public class FileUtils {
         }
     }
 
-    private File getAbsoluteFile(String relativePath, Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            return new File(context.getExternalFilesDir(null), relativePath);
-        } else {
-            return new File(context.getFilesDir(), relativePath);
-        }
-    }
 }

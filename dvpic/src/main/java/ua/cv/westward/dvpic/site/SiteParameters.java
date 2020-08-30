@@ -2,11 +2,14 @@ package ua.cv.westward.dvpic.site;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import ua.cv.westward.dvpic.PrefKeys;
 import ua.cv.westward.dvpic.utils.FileUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
 
 /**
  * Конфигурацинные параметры сайтов, с которых приложение загружает приложения.
@@ -26,12 +29,12 @@ public class SiteParameters {
     public SiteParameters( Context context, String siteid ) {
         mSite = Site.valueOf( siteid );
         //
-        SharedPreferences prefs = context.getSharedPreferences( PrefKeys.NAME, Context.MODE_PRIVATE );
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         try {
             StringBuilder sb = new StringBuilder( PrefKeys.STORAGE_TEMPLATE );
             sb.append( mSite.name() );
-            mStorageSize = Integer.parseInt( prefs.getString( sb.toString(), "200" ));
+            mStorageSize = Integer.parseInt(Objects.requireNonNull(prefs.getString(sb.toString(), "200")));
         } catch( Exception e ) {
             mStorageSize = 100;
         }
@@ -62,7 +65,14 @@ public class SiteParameters {
         sb.append( imageID );
         return sb.toString();
     }
+    public String getVideoPageURL( String imageID ) {
+        if( mSite.getPageURL() == null )
+            return null;
 
+        StringBuilder sb = new StringBuilder( mSite.getVideoURL() );
+        sb.append( imageID );
+        return sb.toString();
+    }
     /**
      * Get website base path
      * @return
@@ -76,8 +86,8 @@ public class SiteParameters {
      * @return
      * @throws IOException
      */
-    public String getImagesFolder() throws IOException {
-        return FileUtils.getPathSD( PrefKeys.SD_FILES_PATH, mSite.getFolder() );
+    public String getImagesFolder(Context context) throws IOException {
+        return FileUtils.getPathSD( PrefKeys.SD_FILES_PATH, mSite.getFolder(), context );
     }
 
     /**

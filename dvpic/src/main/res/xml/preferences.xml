@@ -72,12 +72,18 @@
             android:key="NETWORK_TYPE"
             android:summary="@string/pref_network_type_summary"
             android:title="@string/pref_network_type_title" />
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="SHOW_VIDEO"
+            android:summary="@string/pref_gif_type_title"
+            android:title="@string/pref_gif_type_title" />
         <ListPreference
             android:defaultValue="WIFI"
             android:dialogTitle="@string/pref_gif_type_title"
             android:entries="@array/network_type_names2"
             android:entryValues="@array/network_type_values2"
             android:key="GIF_NETWORK_TYPE"
+            android:dependency="SHOW_VIDEO"
             android:summary="@string/pref_gif_type_summary"
             android:title="@string/pref_gif_type_title" />
         <ListPreference

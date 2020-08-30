@@ -55,7 +55,7 @@ public class PrefKeys {
     public static final String AUTO_RELOAD_TIME   = "AUTO_RELOAD";
     public static final String STORAGE_TEMPLATE   = "STORAGE_";   // ( + _FAV, _DV, _IDA )
 
-    public static final String SHOW_NOTES         = "SHOW_NOTE";
+    public static final String SHOW_VIDEO         = "SHOW_VIDEO";
     public static final String AUTO_HIDE_NOTES    = "AUTO_HIDE_NOTE";
 
     public static final String DELETE_ALL         = "DELETE_ALL";

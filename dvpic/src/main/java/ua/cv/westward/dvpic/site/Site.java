@@ -57,7 +57,9 @@ public enum Site {
     public String getPageURL() {
         return pageURL;
     }
-
+    public String getVideoURL() {
+        return "https://dimonvideo.ru/vuploader/";
+    }
     public boolean canExclude() {
         return canExclude;
     }

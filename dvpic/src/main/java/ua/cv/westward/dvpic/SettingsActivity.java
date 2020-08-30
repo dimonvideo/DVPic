@@ -17,6 +17,7 @@ public class SettingsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_preferences);
         try {
             ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
             actionBar.setTitle(R.string.menu_preferences_title);
 
             if (actionBar != null) {
