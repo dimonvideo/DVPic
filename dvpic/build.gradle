@@ -5,13 +5,13 @@ apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
 android {
     signingConfigs {
         debug {
-            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
         }
         release {
-            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
@@ -25,8 +25,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 223
-        versionName "2.3"
+        versionCode 2231
+        versionName "2.3.1"
     }
     buildTypes {
         release {
@@ -66,12 +66,12 @@ dependencies {
     exclude group: 'stax', module: 'stax-api'
     exclude group: 'xpp3', module: 'xpp3'
 }
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
 
 
 }
