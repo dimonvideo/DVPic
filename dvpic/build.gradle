@@ -5,13 +5,13 @@ apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
         }
         release {
-            storeFile file('C:\\Android\\.dv.keystore\\dv21112011')
+            storeFile file('D:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
             keyAlias = 'dvpic'
             keyPassword 'dv21112011'
@@ -25,8 +25,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 2231
-        versionName "2.3.1"
+        versionCode 2232
+        versionName "2.3.2"
     }
     buildTypes {
         release {
