@@ -1,6 +1,8 @@
 package ua.cv.westward.dvpic;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import ua.cv.westward.dvpic.db.DBAdapter;
@@ -24,16 +26,23 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 
+import android.provider.MediaStore;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.util.TypedValue;
@@ -50,6 +59,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.PagerAdapter;
@@ -452,13 +462,26 @@ public class FlipViewerActivity extends AppCompatActivity implements
      * @param image Объект метаданных изображения.
      */
     private void shareImage( AppImage image ) {
+        ArrayList<Uri> files = new ArrayList<Uri>();
+
         File file = new File( image.getFilename() );
-        Uri uri = Uri.fromFile( file );
+        File pic = new File(Environment.DIRECTORY_PICTURES+"/"+ image.getImageID()+".jpg");
+        Uri uri;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+            uri = FileProvider.getUriForFile(FlipViewerActivity.this, BuildConfig.APPLICATION_ID + ".provider", file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        files.add(uri);
+
+        //Uri uri = Uri.fromFile( file );
 
         Intent i = new Intent( Intent.ACTION_SEND );
         i.setType( "image/*" );
         //Subject for the message or Email
-        //i.putExtra(Intent.EXTRA_SUBJECT, "My Picture");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Sent from DVPic");
         i.putExtra( Intent.EXTRA_STREAM, uri );
         startActivity( Intent.createChooser( i, getString( R.string.dialog_share_title )));
     }

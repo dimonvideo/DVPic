@@ -255,7 +255,7 @@ public class WorkerService extends WakeLockService {
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
 
-
+            Log.e("LOG_TAG", "MediaStore: ");
             ContentResolver resolver = getApplicationContext().getContentResolver();
             Bitmap bitmap;
             Uri uri;
