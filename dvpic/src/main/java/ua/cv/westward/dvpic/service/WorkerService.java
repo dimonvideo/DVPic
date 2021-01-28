@@ -248,7 +248,7 @@ public class WorkerService extends WakeLockService {
         String sb = path + File.separatorChar + FileUtils.splitFileName(image.getFilename());
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getFilename());
