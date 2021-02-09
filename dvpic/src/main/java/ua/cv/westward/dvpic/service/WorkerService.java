@@ -12,12 +12,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
@@ -247,36 +250,71 @@ public class WorkerService extends WakeLockService {
 
         String sb = path + File.separatorChar + FileUtils.splitFileName(image.getFilename());
 
+        String ext = image.getFilename().substring(image.getFilename().lastIndexOf(".") + 1);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getFilename());
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getImageID());
 
-            Log.e("LOG_TAG", "MediaStore: ");
-            ContentResolver resolver = getApplicationContext().getContentResolver();
-            Bitmap bitmap;
-            Uri uri;
-            try {
-                // Requires permission WRITE_EXTERNAL_STORAGE
-                bitmap = BitmapFactory.decodeFile( image.getFilename());
-                uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            } catch (Exception e) {
-                Log.e("LOG_TAG", "Error inserting picture in MediaStore: " + e.getMessage());
-                return;
-            }
-            assert uri != null;
-            try (OutputStream stream = resolver.openOutputStream(uri)) {
-                if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)) {
-                    throw new IOException("Error compressing the picture.");
+            if (ext.equals("mp4")){
+                contentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/" + "DVPic");
+                contentValues.put(MediaStore.Video.Media.TITLE, image.getImageID());
+                contentValues.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+                contentValues.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+                contentValues.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+                contentValues.put(MediaStore.Video.Media.IS_PENDING, 1);
+                ContentResolver resolver = getApplicationContext().getContentResolver();
+                Uri collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+                Uri uriSavedVideo = resolver.insert(collection, contentValues);
+                ParcelFileDescriptor pfd;
+                try {
+                    pfd = getApplicationContext().getContentResolver().openFileDescriptor(uriSavedVideo, "w");
+                    FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
+                    File imageFile = new File(image.getFilename());
+
+                    FileInputStream in = new FileInputStream(imageFile);
+                    byte[] buf = new byte[8192];
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+
+                        out.write(buf, 0, len);
+                    }
+                    out.close();
+                    in.close();
+                    pfd.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                resolver.delete(uri, null, null);
-                Log.e("LOG_TAG", "Error adding picture to gallery: " + e.getMessage());
-            }
+                contentValues.clear();
+                contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
+                getApplicationContext().getContentResolver().update(uriSavedVideo, contentValues, null, null);
+            } else {
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
 
+                Log.e("LOG_TAG", "MediaStore: ");
+                ContentResolver resolver = getApplicationContext().getContentResolver();
+                Bitmap bitmap;
+                Uri uri;
+                try {
+                    // Requires permission WRITE_EXTERNAL_STORAGE
+                    bitmap = BitmapFactory.decodeFile(image.getFilename());
+                    uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                } catch (Exception e) {
+                    Log.e("LOG_TAG", "Error inserting picture in MediaStore: " + e.getMessage());
+                    return;
+                }
+                assert uri != null;
+                try (OutputStream stream = resolver.openOutputStream(uri)) {
+                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)) {
+                        throw new IOException("Error compressing the picture.");
+                    }
+                } catch (Exception e) {
+                    resolver.delete(uri, null, null);
+                    Log.e("LOG_TAG", "Error adding picture to gallery: " + e.getMessage());
+                }
+            }
         } else FileUtils.copyFile( image.getFilename(), sb);
     }
 
