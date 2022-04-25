@@ -156,6 +156,7 @@ public class WorkerService extends WakeLockService {
         Intent i = new Intent( PrefKeys.INTENT_SERVICE_UPD );
         i.putExtra( PrefKeys.INTENT_SERVICE_CMD, cmd );
         i.putExtra( PrefKeys.INTENT_COUNT, count );
+        i.setPackage("ua.cv.westward.dvpic");
         sendBroadcast( i );
     }
 
