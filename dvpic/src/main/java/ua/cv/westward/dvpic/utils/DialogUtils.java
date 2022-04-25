@@ -8,9 +8,12 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 public class DialogUtils {
 
@@ -64,7 +67,8 @@ public class DialogUtils {
      * Обновить виджет приложения.
      * @param count
      */
-    public static void updateWidget( Context ctx, int count ) {
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    public static void updateWidget(Context ctx, int count ) {
         AppWidgetManager manager = AppWidgetManager.getInstance( ctx );
         RemoteViews updateViews = new RemoteViews( ctx.getPackageName(), R.layout.widget_icon2 );
         ComponentName widgetName = new ComponentName( ctx, IconWidget.class );
@@ -80,7 +84,7 @@ public class DialogUtils {
         Intent onClickIntent = prefs.getWidgetOnClickIntent();
         
         PendingIntent clickPI = PendingIntent.getActivity( ctx, 0,
-                onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT );        
+                onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         updateViews.setOnClickPendingIntent( R.id.widget, clickPI );        
         
         manager.updateAppWidget( widgetName, updateViews );

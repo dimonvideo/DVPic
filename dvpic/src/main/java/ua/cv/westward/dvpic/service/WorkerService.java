@@ -16,6 +16,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.preference.PreferenceManager;
 
 import java.io.File;
@@ -82,6 +83,7 @@ public class WorkerService extends WakeLockService {
     /**
      * Выполнение реальной работы сервиса (background thread)
      */
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void execute( Intent intent ) {
         // startup: get preferences, database instance
@@ -161,6 +163,7 @@ public class WorkerService extends WakeLockService {
      * Команда CMD_UPDATE_IMAGES.
      * Загрузить изображения с указанных сайтов.
      */
+    @RequiresApi(api = Build.VERSION_CODES.S)
     private int downloadImages() {
 
         ImagesCleaner cleaner = new ImagesCleaner( dbAdapter );
@@ -225,7 +228,8 @@ public class WorkerService extends WakeLockService {
      * Команда CMD_DELETE_IMAGES.
      * Удалить все изображения для указанных сайтов.
      */
-    private void deleteImages( String[] siteIDs ) throws IOException {
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private void deleteImages(String[] siteIDs ) throws IOException {
         if( siteIDs == null )
             return;
         // цикл удаления изображений из папок сайтов
@@ -269,7 +273,9 @@ public class WorkerService extends WakeLockService {
                 Uri uriSavedVideo = resolver.insert(collection, contentValues);
                 ParcelFileDescriptor pfd;
                 try {
+                    assert uriSavedVideo != null;
                     pfd = getApplicationContext().getContentResolver().openFileDescriptor(uriSavedVideo, "w");
+                    assert pfd != null;
                     FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
                     File imageFile = new File(image.getFilename());
 

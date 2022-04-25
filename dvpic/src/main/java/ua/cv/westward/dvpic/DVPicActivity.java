@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.ActivityCompat;
@@ -33,6 +34,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.datatransport.BuildConfig;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -139,7 +141,7 @@ public class DVPicActivity extends AppCompatActivity
                     .build();
 
             assert shortcutManager != null;
-            shortcutManager.setDynamicShortcuts(Arrays.asList(favShortcut, newShortcut));
+            new Thread(() -> shortcutManager.setDynamicShortcuts(Arrays.asList(favShortcut, newShortcut))).start();
 
         }
 
@@ -177,12 +179,19 @@ public class DVPicActivity extends AppCompatActivity
             requestPermission();
         }
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            reloadImages();
+            swipeRefreshLayout.setRefreshing(false);
+
+        });
+
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mLocalBroadcast ,
                 new IntentFilter("myBroadcast"));
 
 
     }
-    private BroadcastReceiver mLocalBroadcast = new BroadcastReceiver() {
+    private final BroadcastReceiver mLocalBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // take values from intent which contains in intent if you putted their
@@ -251,6 +260,7 @@ public class DVPicActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void onStart() {
         super.onStart();
@@ -382,6 +392,7 @@ public class DVPicActivity extends AppCompatActivity
     /**
      * Выбор какого-либо пункта системного меню.
      */
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item ) {
         super.onOptionsItemSelected( item );
@@ -495,6 +506,7 @@ public class DVPicActivity extends AppCompatActivity
     /**
      * Установить счетчики картинок для кнопок сайтов.
      */
+    @RequiresApi(api = Build.VERSION_CODES.S)
     private void setButtonCounters() {
         // fav images button
         if( mFavButton != null ) {

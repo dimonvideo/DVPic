@@ -1,5 +1,6 @@
 package ua.cv.westward.dvpic.service;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -24,6 +25,7 @@ public abstract class WakeLockService extends IntentService {
 
     /** WakeLock - запрос на удержание процессора на время работы сервиса */
     private static volatile PowerManager.WakeLock wakeLock = null;
+    @SuppressLint("WrongConstant")
     @Override
     public void onCreate() {
         super.onCreate();

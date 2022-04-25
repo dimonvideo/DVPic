@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import ua.cv.westward.dvpic.db.DBAdapter;
 import ua.cv.westward.dvpic.db.ImageCursorWrapper;
@@ -57,6 +58,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.content.FileProvider;
@@ -121,7 +123,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
             mSiteIds = new String[] { mGallery.name() };
         }
 
-        if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
+    //    if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this );
         // получить настройки
@@ -169,6 +171,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
         MyApplication.isForeground = false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void onStop() {
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -318,8 +321,9 @@ public class FlipViewerActivity extends AppCompatActivity implements
     /**
      * Выбор какого-либо пункта системного меню.
      */
+    @SuppressLint("NonConstantResourceId")
     @Override
-    public boolean onOptionsItemSelected( MenuItem item ) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item ) {
         super.onOptionsItemSelected( item );
 
         switch( item.getItemId() ) {
@@ -831,7 +835,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
          * @param object The same object that was returned by instantiateItem(View, int)
          */
         @Override
-        public void setPrimaryItem( ViewGroup container, int position, Object object ) {
+        public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object ) {
             BaseViewer newViewer = (BaseViewer) object;
             if( currentViewer != newViewer ) {
                 if( newViewer != null ) {
@@ -875,7 +879,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
          *         or {@link #POSITION_NONE} if the item is no longer present.
          */
         @Override
-        public int getItemPosition( Object object ) {
+        public int getItemPosition(@NonNull Object object ) {
             int count = cursor.getCount();
             if( count == 0 )
                 return POSITION_NONE;
@@ -918,7 +922,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
         }
 
         @Override
-        public boolean isViewFromObject( View view, Object object ) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object ) {
             return view == object;
         }
 
@@ -948,10 +952,13 @@ public class FlipViewerActivity extends AppCompatActivity implements
             return dlg;
         }
 
+        @NonNull
         @Override
         public Dialog onCreateDialog( Bundle savedInstanceState ) {
-            mImage = getArguments().getParcelable( "image" );
-            mAdapter = new CommandAdapter( getActivity(), mImage );
+            if (getArguments() != null) {
+                mImage = getArguments().getParcelable( "image" );
+            }
+            mAdapter = new CommandAdapter(getActivity(), mImage);
 
             return new AlertDialog.Builder( getActivity() )
                 .setTitle( R.string.dialog_command_title )
@@ -959,7 +966,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
                     @Override
                     public void onClick( DialogInterface dialog, int which ) {
                         int cmd = (int) mAdapter.getItemId(which);
-                        ((FlipViewerActivity) getActivity()).doImageCommand( cmd, mImage );
+                        ((FlipViewerActivity) requireActivity()).doImageCommand( cmd, mImage );
                         dialog.cancel();
                     }
                 })
@@ -982,7 +989,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
         /**
          * ListAdapter списка команд картинки.
          */
-        private class CommandAdapter extends BaseAdapter {
+        private static class CommandAdapter extends BaseAdapter {
 
             private final Context mCtx;
             private final int mLayoutID;
@@ -1066,7 +1073,7 @@ public class FlipViewerActivity extends AppCompatActivity implements
 
         private final int layoutID;
 
-        private LayoutOptions( int resID ) {
+        LayoutOptions(int resID) {
             this.layoutID = resID;
         }
     }
