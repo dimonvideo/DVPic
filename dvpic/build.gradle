@@ -26,7 +26,7 @@ android {
         multiDexEnabled true
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 2237
+        versionCode 2238
         versionName "2.4"
     }
     buildTypes {
@@ -69,8 +69,8 @@ dependencies {
 }
     implementation 'com.google.firebase:firebase-analytics:20.1.2'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.10'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.google.firebase:firebase-messaging:23.0.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
