@@ -62,17 +62,17 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation ('org.simpleframework:simple-xml:2.7.1') {
     exclude group: 'stax', module: 'stax-api'
     exclude group: 'xpp3', module: 'xpp3'
 }
-    implementation 'com.google.firebase:firebase-analytics:20.1.2'
+    implementation 'com.google.firebase:firebase-analytics:21.0.0'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'com.google.android.material:material:1.6.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.10'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    implementation 'com.google.firebase:firebase-messaging:23.0.3'
+    implementation 'com.google.firebase:firebase-messaging:23.0.5'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 
