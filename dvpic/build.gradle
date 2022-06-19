@@ -3,7 +3,20 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
 
 android {
-
+    signingConfigs {
+        debug {
+            storeFile file('c:\\Android\\.dv.keystore\\dv21112011')
+            storePassword 'dv21112011'
+            keyAlias = 'dvpic'
+            keyPassword 'dv21112011'
+        }
+        release {
+            storeFile file('c:\\Android\\.dv.keystore\\dv21112011')
+            storePassword 'dv21112011'
+            keyAlias = 'dvpic'
+            keyPassword 'dv21112011'
+        }
+    }
     compileSdkVersion 32
     buildToolsVersion '30.0.3'
 
