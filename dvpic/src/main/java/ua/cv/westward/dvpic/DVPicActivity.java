@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -17,16 +18,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.ActivityCompat;
@@ -36,12 +39,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.datatransport.BuildConfig;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -83,6 +83,7 @@ public class DVPicActivity extends AppCompatActivity
     private InfoButton mNewButton;
     private InfoButton mFavButton;
     private ProgressBar progressBar;
+    SharedPreferences sharedPrefs;
     /* STARTUP */
 
     @Override
@@ -151,6 +152,8 @@ public class DVPicActivity extends AppCompatActivity
         // то приложение продолжает работу в нормальном режиме
         if (isPermissionGranted()) {
 
+            appUpdateDialog();
+
             try {
                 ProviderInstaller.installIfNeeded(getApplicationContext());
                 SSLContext sslContext;
@@ -189,8 +192,41 @@ public class DVPicActivity extends AppCompatActivity
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mLocalBroadcast ,
                 new IntentFilter("myBroadcast"));
 
-
     }
+
+    private void appUpdateDialog() {
+        try {
+
+            if (appWasUpdated(this)) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(DVPicActivity.this);
+                alert.setTitle(getString(R.string.welcome));
+
+                WebView wv = new WebView(DVPicActivity.this);
+
+                wv.loadUrl("file:///android_asset/" + getString(R.string.asset_welcome));
+
+                wv.setWebViewClient(new WebViewClient()
+                {
+                    public boolean shouldOverrideUrlLoading(WebView view, String url)
+                    {
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+
+                alert.setNegativeButton(android.R.string.ok,
+                        (dialog, which) -> dialog.dismiss());
+                alert.show();
+
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final BroadcastReceiver mLocalBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -222,6 +258,7 @@ public class DVPicActivity extends AppCompatActivity
                 try {
                     FileUtils.checkBaseAppPath(getApplicationContext());
                     if (InternetUtils.isWifiConnected(getApplicationContext())) reloadImages();
+                    appUpdateDialog();
 
                 } catch (Exception e) {
                     String sb = getString(R.string.msg_sdcard_access_error) + "\n--\n" +
@@ -416,8 +453,8 @@ public class DVPicActivity extends AppCompatActivity
             }
             case R.id.menu_about2: {
 
-                String link = "https://dimonvideo.ru/android.html";
-                if (BuildConfig.FLAVOR == "DVPicGoogle") {
+                String link = "https://dimonvideo.ru/android/14/DimonVideo/0/0";
+                if (BuildConfig.GOOGLE) {
                     link = "https://play.google.com/store/apps/dev?id=6091758746633814135";
                 }
 
@@ -435,6 +472,7 @@ public class DVPicActivity extends AppCompatActivity
 
     BroadcastReceiver onServiceUpdate = new BroadcastReceiver() {
 
+        @RequiresApi(api = Build.VERSION_CODES.S)
         @Override
         public void onReceive( Context context, Intent intent ) {
             // если при выполнении команды произошла ошибка
@@ -534,5 +572,19 @@ public class DVPicActivity extends AppCompatActivity
     @Override
     public void onSiteSelect( String siteid ) {
         showImages( siteid );
+    }
+
+    // is new version
+    public boolean appWasUpdated(Context context) throws PackageManager.NameNotFoundException {
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+        int versionCode = info.versionCode;
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPrefs.getInt("last_version_code", 1) != versionCode) {
+            sharedPrefs.edit().putInt("last_version_code", versionCode).apply();
+            return true;
+        }
+        return false;
     }
 }

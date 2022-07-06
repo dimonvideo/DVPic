@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WelcomeActivity.this );
                 SharedPreferences.Editor ed = prefs.edit();
                 ed.putInt( PrefKeys.APP_VERSION, Utils.getVersion( WelcomeActivity.this ));
-                ed.commit();
+                ed.apply();
 
                 // finish this activity
                 finish();
@@ -43,9 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
         WebView ww = (WebView) findViewById( R.id.webview );
         ww.getSettings().setSupportZoom( false );
 //        ww.setBackgroundColor( 0 ); // transparent background
-        
-        StringBuilder sb = new StringBuilder( "file:///android_asset/" );
-        sb.append( getString( R.string.asset_welcome ));
-        ww.loadUrl( sb.toString() );                
+
+        ww.loadUrl("file:///android_asset/" + getString(R.string.asset_welcome));
     }   
 }

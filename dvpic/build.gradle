@@ -4,12 +4,6 @@ apply plugin: 'com.google.gms.google-services' // Google Services Gradle plugin
 
 android {
     signingConfigs {
-        debug {
-            storeFile file('c:\\Android\\.dv.keystore\\dv21112011')
-            storePassword 'dv21112011'
-            keyAlias = 'dvpic'
-            keyPassword 'dv21112011'
-        }
         release {
             storeFile file('c:\\Android\\.dv.keystore\\dv21112011')
             storePassword 'dv21112011'
@@ -26,8 +20,8 @@ android {
         multiDexEnabled true
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 2238
-        versionName "2.4"
+        versionCode 2500
+        versionName "2.5"
     }
     buildTypes {
         release {
@@ -47,14 +41,14 @@ android {
             dimension = 'dimonvideo'
             applicationId = 'ua.cv.westward.dvpic'
             signingConfig signingConfigs.release
-            buildConfigField "boolean", "FREE", "true"
+            buildConfigField "boolean", "GOOGLE", "true"
             versionNameSuffix "-google"
         }
         DVPicSamsung {
             dimension = 'dimonvideo'
             applicationId = 'ua.cv.westward.dvpic'
             signingConfig signingConfigs.release
-            buildConfigField "boolean", "FREE", "false"
+            buildConfigField "boolean", "GOOGLE", "false"
             versionNameSuffix "-samsung"
 
         }
@@ -72,7 +66,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 
