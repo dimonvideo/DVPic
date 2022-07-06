@@ -42,6 +42,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -112,9 +113,6 @@ public class DVPicActivity extends AppCompatActivity
             FirebaseMessaging.getInstance().subscribeToTopic("all")
                 .addOnCompleteListener(task -> {
                     Log.d("DVPIC", " === подписано ===");
-                    if (!task.isSuccessful()) {
-                        Log.d("DVPIC", " === не подписано ===");
-                    }
                 });
         } catch (Exception ignored) {
         }
@@ -221,6 +219,23 @@ public class DVPicActivity extends AppCompatActivity
                         (dialog, which) -> dialog.dismiss());
                 alert.show();
 
+            } else {
+                View parentLayout = findViewById(android.R.id.content);
+                Snackbar snackbar = Snackbar.make(parentLayout, getString(R.string.new_version), Snackbar.LENGTH_LONG);
+                snackbar.setAction(getString(R.string.download), view -> {
+
+                    String link = "https://dimonvideo.ru/android/1";
+                    if (BuildConfig.GOOGLE) {
+                        link = "https://play.google.com/store/apps/details?id=ru.dimonvideo.videos";
+                    }
+
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(browserIntent);
+
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -268,6 +283,22 @@ public class DVPicActivity extends AppCompatActivity
                 }
             } else {
                 Toast.makeText(DVPicActivity.this, "Разрешения не получены", Toast.LENGTH_LONG).show();
+                View parentLayout = findViewById(android.R.id.content);
+                Snackbar snackbar = Snackbar.make(parentLayout, getString(R.string.new_version), Snackbar.LENGTH_LONG);
+                snackbar.setAction(getString(R.string.download), view -> {
+
+                    String link = "https://dimonvideo.ru/android/1";
+                    if (BuildConfig.GOOGLE) {
+                        link = "https://play.google.com/store/apps/details?id=ru.dimonvideo.videos";
+                    }
+
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    startActivity(browserIntent);
+
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

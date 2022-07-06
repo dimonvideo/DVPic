@@ -23,14 +23,14 @@ import ua.cv.westward.dvpic.site.SiteParameters;
  * @author Vladimir Kuts
  */
 public class DimonVideoHelper extends BaseImageHelper {
-        
+
     public DimonVideoHelper( Context context, SiteParameters params ) {
         super( context, params );
     }
 
     /**
      * Получить список фотографий RSS ленты
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     protected List<? extends AbstractImage> getImagesList() throws Exception {
@@ -53,11 +53,11 @@ public class DimonVideoHelper extends BaseImageHelper {
             }
         } finally {
             if( connection != null ) connection.disconnect();
-        }        
+        }
     }
-    
+
 //    private static final char[] tag = { '<', '?', 'x', 'm', 'l', ' ' };
-    
+
 //    /**
 //     * Verify input stream (must begins with <feed>)
 //     * @param is
@@ -70,7 +70,7 @@ public class DimonVideoHelper extends BaseImageHelper {
 //            final char[] buffer = new char[6];
 //            // set mark to return back
 //            is.mark( 20 );
-//            
+//
 //            Reader in = new InputStreamReader( is, "UTF-8" );
 //            try {
 //                int read = in.read( buffer, 0, 6 );

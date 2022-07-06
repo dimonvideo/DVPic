@@ -35,5 +35,7 @@
     <string name="default_notification_channel_name">DVPic</string>
     <string name="submit">Звук</string>
     <string name="zoom">zoom</string>
+    <string name="download">Скачать</string>
+    <string name="new_version">Доступно обновление</string>
 
 </resources>

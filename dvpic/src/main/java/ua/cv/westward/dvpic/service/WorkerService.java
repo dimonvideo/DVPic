@@ -406,7 +406,7 @@ public class WorkerService extends WakeLockService {
             // Broadcast сообщение об ошибке
             Intent i = new Intent( PrefKeys.INTENT_SERVICE_UPD );
             i.setPackage("ua.cv.westward.dvpic");
-            i.putExtra( PrefKeys.INTENT_ERROR_MSG, msg );
+          i.putExtra( PrefKeys.INTENT_ERROR_MSG, msg );
             sendBroadcast( i );
         }
     }
